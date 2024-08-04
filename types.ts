@@ -18,3 +18,8 @@ export interface StandingsRowProps {
   change: number;
   index: number;
 }
+
+export interface MapComponentProps {
+  latitude: number
+  longitude: number
+}
