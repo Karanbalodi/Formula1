@@ -1,58 +1,51 @@
-import Image from "next/image";
 import NumberTicker from "../magicui/number-ticker";
-import { teamColors } from "@/constants";
+import { FC } from "react";
+import { FastestLapProps } from "@/types";
+import { FlagRounded } from "../flag-rounded/flag-rounded";
 import { convertNationalityToCountryCode } from "@/utils";
-import { BiTimer } from "react-icons/bi";
-import { FaFlagCheckered } from "react-icons/fa";
-import { IoSpeedometerOutline } from "react-icons/io5";
 
-export const FastestLap = () => {
-  const teamColor = teamColors["red_bull"];
-  const countryCode = convertNationalityToCountryCode("British");
-  const gradientColor = `linear-gradient(to top left, ${teamColor.from}, ${teamColor.to})`;
+export const FastestLap: FC<FastestLapProps> = ({ details }) => {
   return (
-    <div
-      style={{
-        backgroundImage: gradientColor,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }}
-      className="rounded-md px-4 py-3"
-    >
-      <p className="text-white text-2xl">Fastest Lap</p>
-      <div className="flex mt-2">
-        <Image
-          src="https://rapit.com.br/assets/Redbull800x800-DrR2QuRz.webp"
-          alt="constructor"
-          width={170}
-          height={170}
-        />
-        {/* <Image
-        src="https://rapit.com.br/images/drivers400/max_verstappen_headshot.webp"
-        alt="country"
-        width={180}
-        height={120}
-      /> */}
-        <div className="ml-8">
-          <p className="text-white text-lg">Max Verstappen</p>
-          <p className="text-white text-md">Red bull racing</p>
-          <div className="text-grey-8a text-sm flex items-center mt-1">
-            <BiTimer size={20} />
-            <p className="ml-1">1:46.653</p>
-          </div>
-          <div className="text-grey-8a text-sm flex items-center mt-1 ml-1">
-            <FaFlagCheckered size={16} />
-            <p className="ml-1">33rd lap</p>
-          </div>
-          <div className="text-grey-8a text-sm flex items-center mt-1 ml-1">
-            <IoSpeedometerOutline size={16}/>
-            <p className="ml-1">Average speed of lap</p>
-          </div>
-          <div className="text-white text-2xl mt-1">
-            <NumberTicker value={236.415} className="text-white text-4xl" />
-            Kmph
-          </div>
-        </div>
+    <div className="border border-borderColor rounded-md px-4 py-3">
+      <p className="text-2xl">Fastest Laps</p>
+      <div className="rounded-md overflow-hidden mt-2">
+        <table className="w-full">
+          <thead className="bg-grey-fa">
+            <tr className="text-grey-8a text-sm text-left">
+              <th className="px-3 py-2">Driver</th>
+              <th className="py-2">Lap</th>
+              <th className="pr-3 py-2 text-center">Time</th>
+              <th className="pr-1 py-2">Speed <span className="text-xs">(kph)</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="block pt-3 bg-white"></tr>
+            {details?.map((detail, index) => (
+              <tr
+                className={`text-left ${index % 2 === 0 && "bg-grey-fa"}`}
+                key={detail?.driver}
+              >
+                <td className="py-1 px-2">
+                  <div className="flex items-center">
+                    <span>{index + 1}.</span>&nbsp;
+                    <FlagRounded code={convertNationalityToCountryCode(detail.driverNationality)} />
+                    <div className="ml-2">
+                      <p className="text-sm">{detail?.driver}</p>
+                      <p className="text-grey-8a text-xs">
+                        {detail?.constructor?.name}
+                      </p>
+                    </div>
+                  </div>
+                </td>
+                <td className="py-1 text-xs">{detail?.lap}</td>
+                <td className="py-1 text-xs text-end">{detail?.time}</td>
+                <td className="pr-3 py-1 text-xs text-center">
+                  <NumberTicker value={Number(detail?.speed)} className="text-sm"/>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

@@ -9,8 +9,7 @@ export const FlagRounded: FC<FlagRoundedProps> = ({ code }) => {
         src={`https://flagcdn.com/w1280/${code}.webp`}
         alt="country"
         width={32}
-        height={42}
-        objectFit="cover"
+        height={36}
       />
     </div>
   );

@@ -1,16 +1,61 @@
 "use client";
 
-import { useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { StandingsRow } from "./standings-row";
+import {
+  ConstructorStandingsData,
+  DriverStandingsData,
+  StandingsProps,
+} from "@/types";
 
 // 0 -> Driver
 // 1 -> Constructor
-export const Standings = () => {
+export const Standings: FC<StandingsProps> = ({
+  driverStandings,
+  constructorStandings,
+}) => {
   const [selection, setSelection] = useState<number>(0);
 
   const handleSelection = (value: number) => {
     setSelection(value);
   };
+
+  const standings = useMemo(() => {
+    if (selection === 0) {
+      return (
+        <>
+          {driverStandings?.map((standing: DriverStandingsData, index) => (
+            <StandingsRow
+              key={standing?.name}
+              name={standing?.name}
+              subtitle={standing?.subtitle}
+              nationality={standing?.nationality}
+              points={standing?.points}
+              change={standing?.change}
+              index={index + 1}
+            />
+          ))}
+        </>
+      );
+    } else {
+      return (
+        <>
+          {constructorStandings?.map(
+            (standing: ConstructorStandingsData, index) => (
+              <StandingsRow
+                key={standing?.name}
+                name={standing?.name}
+                subtitle={standing?.nationality}
+                nationality={standing?.nationality}
+                points={standing?.points}
+                index={index + 1}
+              />
+            )
+          )}
+        </>
+      );
+    }
+  }, [selection]);
 
   return (
     <div className="border border-borderColor rounded-md px-4 py-3">
@@ -35,40 +80,7 @@ export const Standings = () => {
           </span>
         </div>
       </div>
-      <div className="rounded-md overflow-hidden mt-3">
-        <StandingsRow
-          name="Charles Lerlec"
-          subtitle="Ferrari"
-          nationality={"Monegasque"}
-          points={300}
-          change={43}
-          index={1}
-        />
-        <StandingsRow
-          name="Max Verstappen"
-          subtitle="Redbull Racing"
-          nationality={"Dutch"}
-          points={200}
-          change={38}
-          index={2}
-        />
-        <StandingsRow
-          name="Lewis Hamilton"
-          subtitle="Mercedes"
-          nationality={"British"}
-          points={180}
-          change={28}
-          index={3}
-        />
-        {/* <StandingsRow
-          name="Perez"
-          subtitle="Redbull Racing"
-          nationality={"Mexican"}
-          points={180}
-          change={28}
-          index={4}
-        /> */}
-      </div>
+      <div className="rounded-md overflow-hidden mt-3">{standings}</div>
     </div>
   );
 };
