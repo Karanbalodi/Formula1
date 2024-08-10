@@ -15,7 +15,9 @@ export const FastestLap: FC<FastestLapProps> = ({ details }) => {
               <th className="px-3 py-2">Driver</th>
               <th className="py-2">Lap</th>
               <th className="pr-3 py-2 text-center">Time</th>
-              <th className="pr-1 py-2">Speed <span className="text-xs">(kph)</span></th>
+              <th className="pr-1 py-2">
+                Speed <span className="text-xs">(kph)</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -28,7 +30,11 @@ export const FastestLap: FC<FastestLapProps> = ({ details }) => {
                 <td className="py-1 px-2">
                   <div className="flex items-center">
                     <span>{index + 1}.</span>&nbsp;
-                    <FlagRounded code={convertNationalityToCountryCode(detail.driverNationality)} />
+                    <FlagRounded
+                      code={convertNationalityToCountryCode(
+                        detail.driverNationality ?? ""
+                      )}
+                    />
                     <div className="ml-2">
                       <p className="text-sm">{detail?.driver}</p>
                       <p className="text-grey-8a text-xs">
@@ -40,7 +46,10 @@ export const FastestLap: FC<FastestLapProps> = ({ details }) => {
                 <td className="py-1 text-xs">{detail?.lap}</td>
                 <td className="py-1 text-xs text-end">{detail?.time}</td>
                 <td className="pr-3 py-1 text-xs text-center">
-                  <NumberTicker value={Number(detail?.speed)} className="text-sm"/>
+                  <NumberTicker
+                    value={Number(detail?.speed)}
+                    className="text-sm"
+                  />
                 </td>
               </tr>
             ))}

@@ -12,9 +12,10 @@ export const StandingsRow: FC<StandingsRowProps> = ({
   change,
   index,
   timing,
+  skipOneIndex,
 }) => {
   const countryCode = convertNationalityToCountryCode(nationality);
-  const factor = index % 2;
+  const factor = skipOneIndex ? (index + 1) % 2 : index % 2;
 
   return (
     <div
@@ -23,16 +24,16 @@ export const StandingsRow: FC<StandingsRowProps> = ({
       }`}
     >
       <div className={`flex items-center ${!!timing && "w-5/12"}`}>
-        <span className="text-md mr-2 w-4">{index}.</span>
+        <span className={`text-md mr-2 ${!!timing ? "w-8" : "w-5"}`}>
+          {index}.
+        </span>
         <FlagRounded code={countryCode} />
         <div className="ml-2">
           <p className="text-sm">{name}</p>
           <p className="text-grey-8a text-xs">{subtitle}</p>
         </div>
       </div>
-      {!!timing && (
-        <div className="flex items-center text-sm">{timing}</div>
-      )}
+      {!!timing && <div className="flex items-center text-sm">{timing}</div>}
       <div className="flex items-center">
         <p className="text-sm">{points} PTS</p>
         {!!change && (

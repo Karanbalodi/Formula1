@@ -33,6 +33,7 @@ export interface StandingsRowProps {
   change?: string;
   index: number;
   timing?: string;
+  skipOneIndex?: boolean
 }
 
 export interface PositionListingProps {

@@ -1,6 +1,11 @@
 import { teamColors } from "@/constants";
 import { RankingCardProps } from "@/types";
-import { convertNationalityToCountryCode, loadDriverImage } from "@/utils";
+import {
+  convertNationalityToCountryCode,
+  isColorAvailable,
+  loadConstructorImage,
+  loadDriverImage,
+} from "@/utils";
 import Image from "next/image";
 import { FC } from "react";
 import { FlagRounded } from "../flag-rounded/flag-rounded";
@@ -19,25 +24,34 @@ export const RankingCard: FC<RankingCardProps> = ({
   time,
 }) => {
   const countryCode = convertNationalityToCountryCode(nationality);
-  const teamColor = teamColors["ferrari"];
+  const teamColor =
+    teamColors[
+      isColorAvailable(constructor.constructorId)
+        ? constructor.constructorId
+        : "default"
+    ];
   return (
-    <div className="border border-borderColor rounded-md overflow-hidden">
+    <div
+      className="border border-borderColor rounded-md overflow-hidden"
+      style={{
+        background: `linear-gradient(to top left, ${teamColor.from}, ${teamColor.to})`,
+      }}
+    >
       <div className="flex">
         <Image
-          src={loadDriverImage("karan")}
-          alt="Charles Lerlerc"
-          width={150}
-          height={90}
-          className="bg-gradient-to-tl from-teal-500 to-teal-800"
+          src={loadDriverImage(name)}
+          alt={name}
+          width={160}
+          height={100}
         />
         <div className="px-3 py-3 w-full flex flex-col justify-between">
-          <h3 className="font-f-bold text-xl">
+          <h3 className="font-f-bold text-white text-lg">
             {driverNumber}. {name}
           </h3>
-          <div className="flex items-center">
+          <div className="flex items-center -mt-1">
             <div className="flex items-center">
-              <BiTimer size={24} />
-              <p className="text-sm ml-1 text-grey-8a">
+              <BiTimer size={24} className="text-white" />
+              <p className="text-sm ml-1 text-white">
                 {status === "Finished"
                   ? index === 1
                     ? "Leader"
@@ -47,26 +61,26 @@ export const RankingCard: FC<RankingCardProps> = ({
             </div>
             <div className="flex items-center ml-6">
               <Image
-                src="https://rapit.com.br/assets/Redbull800x800-DrR2QuRz.webp"
-                alt="constructor"
-                width={32}
-                height={42}
+                src={loadConstructorImage(constructor.constructorId)}
+                alt={constructor.name}
+                width={38}
+                height={44}
               />
-              <span className="ml-1 text-grey-8a text-[13px]">
+              <span className="text-white text-sm">
                 {constructor.name}
               </span>
             </div>
           </div>
-          <div className="flex items-center -mt-1">
+          <div className="flex items-center">
             <FlagRounded code={countryCode} />
             <CountryName
               code={countryCode}
-              className="text-grey-8a ml-1 text-[13px]"
+              className="text-white ml-1 text-sm"
             />
           </div>
-          <div className="flex justify-between w-11/12">
+          <div className="flex justify-between w-[96%] mt-2">
             <div className="py-1 px-2 bg-grey-fa rounded-md">
-              <span className="text-grey-8a text-xs">
+              <span className="text-grey-8a text-sm">
                 Pos{" "}
                 <span className="text-blackSecondary font-f-bold text-md ml-2">
                   {index}
@@ -74,7 +88,7 @@ export const RankingCard: FC<RankingCardProps> = ({
               </span>
             </div>
             <div className="py-1 px-2 bg-grey-fa rounded-md">
-              <span className="text-grey-8a text-xs">
+              <span className="text-grey-8a text-sm">
                 Points{" "}
                 <span className="text-blackSecondary font-f-bold text-md ml-2">
                   {points}
@@ -82,7 +96,7 @@ export const RankingCard: FC<RankingCardProps> = ({
               </span>
             </div>
             <div className="py-1 px-2 bg-grey-fa rounded-md">
-              <span className="text-grey-8a text-xs">
+              <span className="text-grey-8a text-sm">
                 Grid{" "}
                 <span className="text-blackSecondary font-f-bold text-md ml-2">
                   {grid}

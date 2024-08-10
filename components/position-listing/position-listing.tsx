@@ -2,9 +2,13 @@ import { FC } from "react";
 import { StandingsRow } from "../race-details/standings-row";
 import { RankingCard } from "../ranking-card/ranking-card";
 import { PositionListingProps, RacingData } from "@/types";
+import { getConstructorRanking } from "@/utils";
 
 export const PositionListing: FC<PositionListingProps> = ({ raceDetails }) => {
   const topThree = raceDetails?.slice(0, 3);
+  const restDrivers = raceDetails?.slice(4);
+  const constructorRanking = getConstructorRanking(raceDetails);
+
   return (
     <section>
       <p className="font-f-bold text-2xl my-4 text-red">Race Rankings</p>
@@ -26,108 +30,39 @@ export const PositionListing: FC<PositionListingProps> = ({ raceDetails }) => {
       </div>
       <div className="grid grid-cols-2 gap-4 mt-2">
         <div>
-          <div className="rounded-md overflow-hidden mt-3">
-            <StandingsRow
-              name="Charles Lerlec"
-              subtitle="Ferrari"
-              nationality={"Monegasque"}
-              points={300}
-              index={3}
-              timing={"+2.300"}
-            />
-            <StandingsRow
-              name="Max Verstappen"
-              subtitle="Redbull Racing"
-              nationality={"Dutch"}
-              points={200}
-              index={4}
-              timing={"+2.300"}
-            />
-            <StandingsRow
-              name="Lewis Hamilton"
-              subtitle="Mercedes"
-              nationality={"British"}
-              points={180}
-              index={5}
-              timing={"+2.300"}
-            />
-            <StandingsRow
-              name="Lewis Hamilton"
-              subtitle="Mercedes"
-              nationality={"British"}
-              points={180}
-              index={6}
-              timing={"+2.300"}
-            />
-            <StandingsRow
-              name="Lewis Hamilton"
-              subtitle="Mercedes"
-              nationality={"British"}
-              points={180}
-              index={7}
-              timing={"+2.300"}
-            />
-            <StandingsRow
-              name="Lewis Hamilton"
-              subtitle="Mercedes"
-              nationality={"British"}
-              points={180}
-              index={8}
-              timing={"+2.300"}
-            />
+          <p className="text-lg">Driver Ranking</p>
+          <div className="rounded-md overflow-hidden mt-2">
+            {restDrivers?.map((driver: RacingData, index) => (
+              <StandingsRow
+                key={driver.Driver.driverId}
+                name={`${driver.Driver.givenName} ${driver.Driver.familyName}`}
+                subtitle={driver.Constructor.name}
+                nationality={driver.Driver.nationality}
+                points={driver.points}
+                index={index + 4}
+                timing={
+                  driver.status === "Finished"
+                    ? driver.Time.time
+                    : driver.status
+                }
+                skipOneIndex
+              />
+            ))}
           </div>
         </div>
         <div>
           <p className="text-lg">Constructor Ranking</p>
-          <div className="rounded-md overflow-hidden mt-3">
-            <StandingsRow
-              name="Charles Lerlec"
-              subtitle="Ferrari"
-              nationality={"Monegasque"}
-              points={300}
-              index={3}
-              timing={"+2.300"}
-            />
-            <StandingsRow
-              name="Max Verstappen"
-              subtitle="Redbull Racing"
-              nationality={"Dutch"}
-              points={200}
-              index={4}
-              timing={"+2.300"}
-            />
-            <StandingsRow
-              name="Lewis Hamilton"
-              subtitle="Mercedes"
-              nationality={"British"}
-              points={180}
-              index={5}
-              timing={"+2.300"}
-            />
-            <StandingsRow
-              name="Lewis Hamilton"
-              subtitle="Mercedes"
-              nationality={"British"}
-              points={180}
-              index={6}
-              timing={"+2.300"}
-            />
-            <StandingsRow
-              name="Lewis Hamilton"
-              subtitle="Mercedes"
-              nationality={"British"}
-              points={180}
-              index={7}
-              timing={"+2.300"}
-            />
-            <StandingsRow
-              name="Lewis Hamilton"
-              subtitle="Mercedes"
-              nationality={"British"}
-              points={180}
-              index={8}
-              timing={"+2.300"}
-            />
+          <div className="rounded-md overflow-hidden mt-2">
+            {constructorRanking?.map((constructor, index) => (
+              <StandingsRow
+                key={constructor?.constructor}
+                name={constructor?.constructor}
+                subtitle={`${constructor?.drivers?.[0]}, ${constructor?.drivers?.[1]}`}
+                nationality={constructor.nationality}
+                points={constructor.points}
+                index={index + 1}
+              />
+            ))}
           </div>
         </div>
       </div>

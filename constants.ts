@@ -1,16 +1,20 @@
 import { NationalityToCountryCode } from "./types";
 
-export const teamColors = {
-  red_bull: { from: "#1E41FF", to: "#1e293b" },
+export const teamColors: { [key: string]: { from: string; to: string } } = {
+  red_bull: { from: "#1e40af", to: "#1e293b" },
   mercedes: { from: "#00D2BE", to: "#115e59" },
-  ferrari: { from: "#DC0000", to: "#991b1b" },
-  mclaren: { from: "#FF8700", to: "#9a3412" },
-  alpine: "#0090FF",
-  aston_martin: "#006F62",
-  alpha_tauri: "#002A72",
-  haas: "#F1F1F1",
-  williams: "#0056A0",
-  alfa_romeo: "#900000",
+  ferrari: { from: "#ef4444", to: "#991b1b" },
+  mclaren: { from: "#f97316", to: "#9a3412" },
+  alpine: { from: "#ec4899", to: "#9d174d" },
+  aston_martin: { from: "#10b981", to: "#065f46" },
+  alpha_tauri: { from: "#64748b", to: "#1e293b" },
+  haas: { from: "#f43f5e", to: "#9f1239" },
+  williams: { from: "#0284c7", to: "#0c4a6e" },
+  racing_point: { from: "#ec4899", to: "#9d174d" },
+  renault: { from: "#eab308", to: "#854d0e" },
+  kick_sauber: { from: "#22c55e", to: "#166534" },
+  rb: { from: "#6366f1", to: "#3730a3" },
+  default: { from: "#ef4444", to: "#991b1b" },
 };
 
 export const nationalityToCountryCode: NationalityToCountryCode = {

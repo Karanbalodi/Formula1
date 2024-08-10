@@ -1,4 +1,4 @@
-import { nationalityToCountryCode } from "./constants";
+import { nationalityToCountryCode, teamColors } from "./constants";
 import {
   ConstructorStandings,
   ConstructorStandingsData,
@@ -113,7 +113,52 @@ export const loadDriverImage = (driverName: string) => {
     const driver = driverName?.toLowerCase()?.replace(/\s+/g, "_");
     const url = require(`@/assets/drivers/${driver}_headshot.webp`);
     return url?.default;
-  } catch(e) {
+  } catch (e) {
     return require(`@/assets/drivers/default.webp`).default;
   }
+};
+
+export const loadConstructorImage = (constructorId: string) => {
+  try {
+    const url = require(`@/assets/constructors/${constructorId}.webp`);
+    return url?.default;
+  } catch (e) {
+    return require(`@/assets/constructors/default.webp`).default;
+  }
+};
+
+export const isColorAvailable = (name: string) =>
+  Object.keys(teamColors).includes(name);
+
+export const getConstructorRanking = (raceData: Array<RacingData>) => {
+  const constructorDetails: { [key: string]: any } = {};
+
+  raceData.forEach((entry) => {
+    const constructor = entry.Constructor.name;
+    const nationality = entry.Constructor.nationality;
+    const points = parseFloat(entry.points);
+    const driverName = `${entry.Driver.givenName} ${entry.Driver.familyName}`;
+
+    if (!constructorDetails[constructor]) {
+      constructorDetails[constructor] = {
+        nationality,
+        points: 0,
+        drivers: new Set(),
+      };
+    }
+
+    constructorDetails[constructor].points += points;
+    constructorDetails[constructor].drivers.add(driverName);
+  });
+
+  const sortedConstructors = Object.entries(constructorDetails)
+    .sort(([, a], [, b]) => b.points - a.points)
+    .map(([constructor, details]) => ({
+      constructor,
+      nationality: details.nationality,
+      points: details.points,
+      drivers: Array.from(details.drivers), // Convert Set to Array
+    }));
+
+  return sortedConstructors;
 };
