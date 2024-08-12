@@ -162,3 +162,33 @@ export const getConstructorRanking = (raceData: Array<RacingData>) => {
 
   return sortedConstructors;
 };
+
+export const createColorPicker = (
+  colorsArray: Array<{ from: string; to: string }>
+) => {
+  let availableColors = [...colorsArray];
+  let constructorMapping: any = {};
+
+  return function pickColor(constructorId: string) {
+    if (constructorMapping[constructorId]) {
+      return constructorMapping[constructorId];
+    }
+
+    if (availableColors.length === 0) {
+      availableColors = [...colorsArray];
+    }
+
+    const randomIndex = Math.floor(Math.random() * availableColors.length);
+
+    const pickedColor = availableColors[randomIndex];
+
+    constructorMapping = {
+      ...constructorMapping,
+      [constructorId]: pickedColor,
+    };
+
+    availableColors.splice(randomIndex, 1);
+
+    return pickedColor;
+  };
+};

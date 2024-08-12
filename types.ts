@@ -6,10 +6,10 @@ export interface RankingCardProps {
   time: string;
   status: string;
   grid: string;
-  index: number
-  driverNumber: string
-  constructor: Constructor
-  nationality: string
+  index: number;
+  driverNumber: string;
+  constructor: Constructor;
+  nationality: string;
 }
 
 export type NationalityToCountryCode = {
@@ -21,8 +21,8 @@ export interface FlagRoundedProps {
 }
 
 export interface CountryNameProps {
-  className: string
-  code: string
+  className: string;
+  code: string;
 }
 
 export interface StandingsRowProps {
@@ -33,7 +33,7 @@ export interface StandingsRowProps {
   change?: string;
   index: number;
   timing?: string;
-  skipOneIndex?: boolean
+  skipOneIndex?: boolean;
 }
 
 export interface PositionListingProps {
@@ -158,4 +158,12 @@ export interface ConstructorStandingsData {
   subtitle: string;
   nationality: string;
   points: string;
+}
+
+export interface RaceGridScatterPlotProps {
+  raceDetails: Array<RacingData>;
+}
+
+export interface FastestLapsBarChartProps {
+  raceDetails: Array<RacingData>;
 }

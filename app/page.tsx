@@ -1,5 +1,7 @@
+import FastestLapsBarChart from "@/components/charts/fastest-laps-bar-chart/fastest-laps-bar-chart";
 import { PositionListing } from "@/components/position-listing/position-listing";
 import { RaceDetails } from "@/components/race-details/race-details";
+import { RaceGridScatterPlot } from "@/components/charts/race-grid-scatter-plot/race-grid-scatter-plot";
 import { getRecentRaceData } from "@/queries/queries";
 import { format } from "date-fns";
 
@@ -30,6 +32,10 @@ export default async function Home() {
         raceDetails={Results}
       />
       <PositionListing raceDetails={Results} />
+      <div className="grid grid-cols-2 gap-4 mt-6">
+        <RaceGridScatterPlot raceDetails={Results} />
+        <FastestLapsBarChart raceDetails={Results} />
+      </div>
     </main>
   );
 }

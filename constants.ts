@@ -516,3 +516,79 @@ export const mapOptions = {
   touchZoom: false, // Disable zooming with pinch gestures
   dragging: false, // Optionally disable dragging
 };
+
+export const randomColors = [
+  { from: "#1e40af", to: "#1e293b" },
+  { from: "#00D2BE", to: "#115e59" },
+  { from: "#ef4444", to: "#991b1b" },
+  { from: "#f97316", to: "#9a3412" },
+  { from: "#ec4899", to: "#9d174d" },
+  { from: "#10b981", to: "#065f46" },
+  { from: "#64748b", to: "#1e293b" },
+  { from: "#0c4a6e", to: "#0284c7" },
+  { from: "#eab308", to: "#854d0e" },
+  { from: "#22c55e", to: "#166534" },
+  { from: "#6366f1", to: "#3730a3" },
+];
+
+export const scatterPlotConstants = {
+  scales: {
+    x: {
+      title: {
+        display: true,
+        text: "Starting Position",
+      },
+      beginAtZero: true,
+    },
+    y: {
+      title: {
+        display: true,
+        text: "Finishing Position",
+      },
+      beginAtZero: true,
+      reverse: true,
+    },
+  },
+  plugins: {
+    legend: {
+      position: "bottom" as any,
+      onClick: () => {},
+    },
+    // tooltip: {
+    //   callbacks: {
+    //     label: (tooltipItem) => {
+    //       const driver = raceDetails[tooltipItem.dataIndex];
+    //       return `${driver.Driver.givenName} ${driver.Driver.familyName}: Start ${driver.grid}, Finish ${driver.position}`;
+    //     },
+    //   },
+    // },
+  },
+};
+
+export const fastestLapConstants = {
+  indexAxis: "y" as any, // This makes the bar chart horizontal
+  scales: {
+    x: {
+      title: {
+        display: true,
+        text: "Average Speed (km/h)",
+      },
+    },
+    y: {
+      title: {
+        display: true,
+        text: "Driver",
+      },
+    },
+  },
+  plugins: {
+    legend: {
+      display: false,
+    },
+    //   tooltip: {
+    //     callbacks: {
+    //       label: (context) => `${context.label}: ${context.raw} km/h`,
+    //     },
+    //   },
+  },
+};
