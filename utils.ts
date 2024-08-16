@@ -1,4 +1,8 @@
-import { nationalityToCountryCode, teamColors } from "./constants";
+import {
+  nationalityToCountryCode,
+  randomColors,
+  teamColors,
+} from "./constants/constants";
 import {
   ConstructorStandings,
   ConstructorStandingsData,
@@ -6,6 +10,8 @@ import {
   DriverStandingsData,
   LapDetails,
   RacingData,
+  Schedule,
+  Seasons,
 } from "./types";
 
 export const convertNationalityToCountryCode = (nationality: string) =>
@@ -29,29 +35,37 @@ export function convertToOrdinal(number: number) {
 
   return number + suffix;
 }
-export const findFastestLap = (
-  raceDetails: Array<RacingData>
-): Array<LapDetails> => {
-  const fastestLaps = [];
-  for (let i = 1; i < 4; i++) {
-    const detail = raceDetails?.find(
-      (result) => result.FastestLap.rank === String(i)
-    );
-    if (!!detail) {
-      fastestLaps.push(createDetails(detail));
-    }
+export const findFastestLap = (raceDetails: Array<RacingData>): LapDetails => {
+  const details = raceDetails.find((driver) => driver.FastestLap.rank === "1");
+  if (!!details) {
+    return createDetails(details);
   }
-  return fastestLaps;
+  return createDetails();
+
+  // const fastestLaps = [];
+  // for (let i = 1; i < 4; i++) {
+  //   const detail = raceDetails?.find(
+  //     (result) => result.FastestLap.rank === String(i)
+  //   );
+  //   if (!!detail) {
+  //     fastestLaps.push(createDetails(detail));
+  //   }
+  // }
+  // return fastestLaps;
 };
 
 export const createDetails = (detail?: RacingData): LapDetails => {
   return {
-    lap: convertToOrdinal(Number(detail?.FastestLap.lap)),
-    driver: `${detail?.Driver.givenName} ${detail?.Driver.familyName}`,
-    speed: detail?.FastestLap.AverageSpeed.speed,
-    constructor: detail?.Constructor,
-    driverNationality: detail?.Driver?.nationality,
-    time: convertToMinuteSecond(detail?.FastestLap?.Time?.time),
+    lap: !!detail ? convertToOrdinal(Number(detail.FastestLap.lap)) : "",
+    driver: !!detail
+      ? `${detail.Driver.givenName} ${detail.Driver.familyName}`
+      : "",
+    speed: !!detail ? detail.FastestLap.AverageSpeed.speed : "",
+    constructor: !!detail
+      ? detail.Constructor
+      : { constructorId: "", url: "", name: "", nationality: "" },
+    driverNationality: !!detail ? detail.Driver.nationality : "",
+    time: !!detail ? convertToMinuteSecond(detail.FastestLap.Time.time) : "",
   };
 };
 
@@ -127,8 +141,13 @@ export const loadConstructorImage = (constructorId: string) => {
   }
 };
 
-export const isColorAvailable = (name: string) =>
-  Object.keys(teamColors).includes(name);
+export const isColorAvailable = (name?: string) => {
+  if (!!name) {
+    return Object.keys(teamColors).includes(name);
+  } else {
+    return false;
+  }
+};
 
 export const getConstructorRanking = (raceData: Array<RacingData>) => {
   const constructorDetails: { [key: string]: any } = {};
@@ -169,9 +188,9 @@ export const createColorPicker = (
   let availableColors = [...colorsArray];
   let constructorMapping: any = {};
 
-  return function pickColor(constructorId: string) {
-    if (constructorMapping[constructorId]) {
-      return constructorMapping[constructorId];
+  return function pickColor(constructorId?: string) {
+    if (constructorId && constructorMapping?.[constructorId]) {
+      return constructorMapping?.[constructorId];
     }
 
     if (availableColors.length === 0) {
@@ -181,14 +200,104 @@ export const createColorPicker = (
     const randomIndex = Math.floor(Math.random() * availableColors.length);
 
     const pickedColor = availableColors[randomIndex];
-
-    constructorMapping = {
-      ...constructorMapping,
-      [constructorId]: pickedColor,
-    };
+    if (constructorId) {
+      constructorMapping = {
+        ...constructorMapping,
+        [constructorId]: pickedColor,
+      };
+    }
 
     availableColors.splice(randomIndex, 1);
 
     return pickedColor;
   };
+};
+
+export const createDropdownCompatibleData = (
+  options: Array<Seasons | Schedule>,
+  type: "season" | "schedule"
+) => {
+  if (type === "season") {
+    const dropdownOptions = options.map((option) => ({
+      id: option.url,
+      displayValue: option.season,
+      value: option.season,
+    }));
+    return dropdownOptions;
+  } else {
+    const dropdownOptions = options.map((option: any) => ({
+      id: option.Circuit.circuitId,
+      displayValue: option.raceName,
+      value: option.round,
+      nation: option.Circuit.Location.country,
+    }));
+    return dropdownOptions;
+  }
+};
+
+export const formatDate = (dateStr: string) => {
+  const date = new Date(dateStr);
+
+  // Define options for formatting
+  const options: any = {
+    day: "2-digit", // 15
+    month: "short", // Aug
+    year: "numeric", // 2024
+    hour: "2-digit", // 01
+    minute: "2-digit", // 00
+    hour12: true, // AM/PM
+  };
+
+  // Format date
+  const formattedDate = new Intl.DateTimeFormat("en-GB", options).format(date);
+
+  // Add suffix to day
+  const day = date.getUTCDate();
+  const suffix = convertToOrdinal(day);
+  const result = `${suffix} ${formattedDate.slice(3)}`;
+  return result;
+};
+
+export const processLapData = (lapData: any) => {
+  const laps = lapData.Races[0].Laps;
+  const driverLaps: Record<
+    string,
+    {
+      from: string;
+      to: string;
+      lapData: Array<{ x: number; y: number; lapTime: string }>;
+    }
+  > = {};
+
+  const pickColor = createColorPicker(randomColors);
+
+  laps.forEach((lap: any) => {
+    lap.Timings.forEach((timing: any) => {
+      const driverId = timing.driverId;
+      const colors = pickColor();
+      if (!driverLaps[driverId]) {
+        driverLaps[driverId] = {
+          from: colors.from,
+          to: colors.to,
+          lapData: [],
+        };
+      }
+      driverLaps[driverId].lapData.push({
+        x: lap.number,
+        y: parseInt(timing.position, 10),
+        lapTime: timing.time,
+      });
+    });
+  });
+
+  return driverLaps;
+};
+
+export const formatSnakeCase = (snakeStr: string): string => {
+  const formattedStr = snakeStr
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+
+  return formattedStr;
 };

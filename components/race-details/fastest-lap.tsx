@@ -1,60 +1,58 @@
+import Image from "next/image";
 import NumberTicker from "../magicui/number-ticker";
+import { teamColors } from "@/constants/constants";
+import { isColorAvailable, loadConstructorImage } from "@/utils";
+import { BiTimer } from "react-icons/bi";
+import { FaFlagCheckered } from "react-icons/fa";
+import { IoSpeedometerOutline } from "react-icons/io5";
 import { FC } from "react";
 import { FastestLapProps } from "@/types";
-import { FlagRounded } from "../flag-rounded/flag-rounded";
-import { convertNationalityToCountryCode } from "@/utils";
 
 export const FastestLap: FC<FastestLapProps> = ({ details }) => {
+  const teamColor =
+    teamColors[
+      isColorAvailable(details.constructor?.constructorId)
+        ? details.constructor?.constructorId
+        : "default"
+    ];
   return (
-    <div className="border border-borderColor rounded-md px-4 py-3">
-      <p className="text-2xl">Fastest Laps</p>
-      <div className="rounded-md overflow-hidden mt-2">
-        <table className="w-full">
-          <thead className="bg-grey-fa">
-            <tr className="text-grey-8a text-sm text-left">
-              <th className="px-3 py-2">Driver</th>
-              <th className="py-2">Lap</th>
-              <th className="pr-3 py-2 text-center">Time</th>
-              <th className="pr-1 py-2">
-                Speed <span className="text-xs">(kph)</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="block pt-3 bg-white"></tr>
-            {details?.map((detail, index) => (
-              <tr
-                className={`text-left ${index % 2 === 0 && "bg-grey-fa"}`}
-                key={detail?.driver}
-              >
-                <td className="py-1 px-2">
-                  <div className="flex items-center">
-                    <span>{index + 1}.</span>&nbsp;
-                    <FlagRounded
-                      code={convertNationalityToCountryCode(
-                        detail.driverNationality ?? ""
-                      )}
-                    />
-                    <div className="ml-2">
-                      <p className="text-sm">{detail?.driver}</p>
-                      <p className="text-grey-8a text-xs">
-                        {detail?.constructor?.name}
-                      </p>
-                    </div>
-                  </div>
-                </td>
-                <td className="py-1 text-xs">{detail?.lap}</td>
-                <td className="py-1 text-xs text-end">{detail?.time}</td>
-                <td className="pr-3 py-1 text-xs text-center">
-                  <NumberTicker
-                    value={Number(detail?.speed)}
-                    className="text-sm"
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div
+      className="rounded-md px-4 py-3"
+      style={{
+        background: `linear-gradient(to top left, ${teamColor.from}, ${teamColor.to})`,
+      }}
+    >
+      <p className="text-white text-2xl">Fastest Lap</p>
+      <div className="flex mt-2">
+        <Image
+          src={loadConstructorImage(details.constructor?.constructorId)}
+          alt={details.constructor.name}
+          width={185}
+          height={140}
+        />
+        <div className="ml-8">
+          <p className="text-white text-lg">{details.driver}</p>
+          <p className="text-white text-md">{details.constructor?.name}</p>
+          <div className="text-white text-sm flex items-center mt-1">
+            <BiTimer size={20} />
+            <p className="ml-1">{details.time}</p>
+          </div>
+          <div className="text-white text-sm flex items-center mt-1 ml-1">
+            <FaFlagCheckered size={16} />
+            <p className="ml-1">{details.lap} lap</p>
+          </div>
+          <div className="text-white text-sm flex items-center mt-1 ml-1">
+            <IoSpeedometerOutline size={16} />
+            <p className="ml-1">Average speed of lap</p>
+          </div>
+          <div className="text-white text-2xl mt-1">
+            <NumberTicker
+              value={Number(details.speed)}
+              className="text-white text-4xl"
+            />
+            Kmph
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -13,7 +13,8 @@ import {
   Legend,
 } from "chart.js";
 import { createColorPicker, isColorAvailable } from "@/utils";
-import { randomColors, scatterPlotConstants, teamColors } from "@/constants";
+import { randomColors, teamColors } from "@/constants/constants";
+import { scatterPlotConstants } from "@/constants/chart-constants";
 
 ChartJS.register(
   CategoryScale,
@@ -42,7 +43,6 @@ export const RaceGridScatterPlot: FC<RaceGridScatterPlotProps> = ({
             y: parseInt(driver.position),
           },
         ],
-        // borderColor: colors.to,
         backgroundColor: colors.from,
         pointRadius: 5,
         showLine: true,

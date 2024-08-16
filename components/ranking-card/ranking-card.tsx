@@ -1,4 +1,4 @@
-import { teamColors } from "@/constants";
+import { teamColors } from "@/constants/constants";
 import { RankingCardProps } from "@/types";
 import {
   convertNationalityToCountryCode,
@@ -66,9 +66,7 @@ export const RankingCard: FC<RankingCardProps> = ({
                 width={38}
                 height={44}
               />
-              <span className="text-white text-sm">
-                {constructor.name}
-              </span>
+              <span className="text-white text-sm">{constructor.name}</span>
             </div>
           </div>
           <div className="flex items-center">

@@ -1,3 +1,5 @@
+import { ParsedUrlQuery } from "querystring";
+
 export interface HeaderProps {}
 
 export interface RankingCardProps {
@@ -110,17 +112,16 @@ export interface RaceDetailsProps {
 }
 
 export interface LapDetails {
-  lap?: string;
-  driver?: string;
-  speed?: string;
-  constructor?: Constructor;
-  position?: string;
-  time?: string;
-  driverNationality?: string;
+  lap: string;
+  driver: string;
+  speed: string;
+  constructor: Constructor;
+  time: string;
+  driverNationality: string;
 }
 
 export interface FastestLapProps {
-  details: Array<LapDetails>;
+  details: LapDetails;
 }
 
 export interface DriverStandings {
@@ -166,4 +167,98 @@ export interface RaceGridScatterPlotProps {
 
 export interface FastestLapsBarChartProps {
   raceDetails: Array<RacingData>;
+}
+
+export interface SearchParams extends ParsedUrlQuery {
+  year?: string;
+  race?: string;
+}
+
+export interface DropdownProps {
+  icon: any;
+  label: string;
+  options: Array<any>;
+  loading?: boolean;
+  onChange: (value: any) => void;
+}
+
+export interface Seasons {
+  season: string;
+  url: string;
+}
+
+export interface Location {
+  lat: string;
+  long: string;
+  locality: string;
+  country: string;
+}
+
+export interface Circuit {
+  circuitId: string;
+  url: string;
+  circuitName: string;
+  Location: Location;
+}
+
+export interface PracticeSession {
+  date: string;
+  time: string;
+}
+
+export interface Schedule {
+  season: string;
+  round: string;
+  url: string;
+  raceName: string;
+  Circuit: Circuit;
+  date: string;
+  time: string;
+  FirstPractice: PracticeSession;
+  SecondPractice: PracticeSession;
+  ThirdPractice: PracticeSession;
+  Qualifying: PracticeSession;
+}
+
+export interface RaceSelectionFormProps {
+  seasons: Array<Seasons>;
+}
+
+export interface LottieAnimationProps {
+  animationData: any;
+  loop?: boolean;
+  autoplay?: boolean;
+  className?: string;
+  height?: number | string;
+  width?: number | string;
+}
+
+export interface HomeProps {
+  year?: string;
+  race?: string;
+}
+
+export interface RaceInformationProps {
+  raceName: string;
+  circuit: string;
+  date: string;
+  time: string;
+  locality: string;
+  country: string;
+}
+
+export interface LapChartServerProps {
+  year?: string;
+  race?: string;
+}
+
+export interface LapChartProps {
+  laps: Record<
+    string,
+    {
+      from: string;
+      to: string;
+      lapData: Array<{ x: number; y: number }>;
+    }
+  >;
 }

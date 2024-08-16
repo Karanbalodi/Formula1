@@ -11,9 +11,11 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+
 import { FastestLapsBarChartProps } from "@/types";
-import { fastestLapConstants, randomColors, teamColors } from "@/constants";
+import { fastestLapConstants } from "@/constants/chart-constants";
 import { createColorPicker, isColorAvailable } from "@/utils";
+import { randomColors, teamColors } from "@/constants/constants";
 
 ChartJS.register(
   CategoryScale,
@@ -30,7 +32,7 @@ const FastestLapsBarChart: FC<FastestLapsBarChartProps> = ({ raceDetails }) => {
   const borderColor: Array<string> = [];
   const speed: Array<number> = [];
   const labels = raceDetails.map((driver) => {
-    speed.push(parseFloat(driver.FastestLap.AverageSpeed.speed));
+    speed.push(parseFloat(driver?.FastestLap?.AverageSpeed?.speed ?? 0));
     backgroundColor.push(
       isColorAvailable(driver.Constructor.constructorId)
         ? teamColors[driver.Constructor.constructorId].from

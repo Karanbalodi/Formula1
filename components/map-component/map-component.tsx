@@ -4,7 +4,7 @@ import React, { FC, useState } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { MapComponentProps } from "@/types";
-import { mapOptions } from "@/constants";
+import { mapOptions } from "@/constants/constants";
 
 const MapComponent: FC<MapComponentProps> = ({ latitude, longitude }) => {
   return (

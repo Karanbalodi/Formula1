@@ -1,4 +1,4 @@
-import { NationalityToCountryCode } from "./types";
+import { NationalityToCountryCode } from "../types";
 
 export const teamColors: { [key: string]: { from: string; to: string } } = {
   red_bull: { from: "#1e40af", to: "#1e293b" },
@@ -529,66 +529,17 @@ export const randomColors = [
   { from: "#eab308", to: "#854d0e" },
   { from: "#22c55e", to: "#166534" },
   { from: "#6366f1", to: "#3730a3" },
+  { from: "#d97706", to: "#7c2d12" },
+  { from: "#6b21a8", to: "#581c87" },
+  { from: "#f43f5e", to: "#9f1239" },
+  { from: "#3b82f6", to: "#1e3a8a" },
+  { from: "#34d399", to: "#064e3b" },
+  { from: "#8b5cf6", to: "#5b21b6" },
+  { from: "#f59e0b", to: "#b45309" },
+  { from: "#0ea5e9", to: "#0369a1" },
+  { from: "#a3e635", to: "#65a30d" },
+  { from: "#9333ea", to: "#4c1d95" },
+  { from: "#ff9800", to: "#e65100" },
+  { from: "#009688", to: "#004d40" },
+  { from: "#f06292", to: "#c2185b" },
 ];
-
-export const scatterPlotConstants = {
-  scales: {
-    x: {
-      title: {
-        display: true,
-        text: "Starting Position",
-      },
-      beginAtZero: true,
-    },
-    y: {
-      title: {
-        display: true,
-        text: "Finishing Position",
-      },
-      beginAtZero: true,
-      reverse: true,
-    },
-  },
-  plugins: {
-    legend: {
-      position: "bottom" as any,
-      onClick: () => {},
-    },
-    // tooltip: {
-    //   callbacks: {
-    //     label: (tooltipItem) => {
-    //       const driver = raceDetails[tooltipItem.dataIndex];
-    //       return `${driver.Driver.givenName} ${driver.Driver.familyName}: Start ${driver.grid}, Finish ${driver.position}`;
-    //     },
-    //   },
-    // },
-  },
-};
-
-export const fastestLapConstants = {
-  indexAxis: "y" as any, // This makes the bar chart horizontal
-  scales: {
-    x: {
-      title: {
-        display: true,
-        text: "Average Speed (km/h)",
-      },
-    },
-    y: {
-      title: {
-        display: true,
-        text: "Driver",
-      },
-    },
-  },
-  plugins: {
-    legend: {
-      display: false,
-    },
-    //   tooltip: {
-    //     callbacks: {
-    //       label: (context) => `${context.label}: ${context.raw} km/h`,
-    //     },
-    //   },
-  },
-};

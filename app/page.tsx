@@ -1,41 +1,20 @@
-import FastestLapsBarChart from "@/components/charts/fastest-laps-bar-chart/fastest-laps-bar-chart";
-import { PositionListing } from "@/components/position-listing/position-listing";
-import { RaceDetails } from "@/components/race-details/race-details";
-import { RaceGridScatterPlot } from "@/components/charts/race-grid-scatter-plot/race-grid-scatter-plot";
-import { getRecentRaceData } from "@/queries/queries";
-import { format } from "date-fns";
+import { RaceSelection } from "@/components/race-selection/race-selection";
+import { Home } from "@/screens/home";
+import { SearchParams } from "@/types";
+import { Suspense } from "react";
 
-export default async function Home() {
-  const {
-    MRData: {
-      RaceTable: { Races },
-    },
-  } = await getRecentRaceData();
-  const currentRace = Races[0];
-
-  const { raceName, Circuit, Results, round, date, time } = currentRace;
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const { year, race } = searchParams;
   return (
-    <main>
-      <p className="font-f-bold text-red text-4xl mt-12">{raceName}</p>
-      <p className="font-f-bold text-blackSecondary text-xl">
-        {Circuit?.circuitName}
-      </p>
-      <p className="text-grey-8a text-sm">
-        {format(date, "do MMM yyyy")} 3:30PM UTC
-      </p>
-      <p className="text-grey-8a text-sm">
-        📍 {Circuit?.Location?.locality}, {Circuit?.Location?.country}
-      </p>
-      <RaceDetails
-        latitude={Circuit?.Location?.lat}
-        longitude={Circuit?.Location?.long}
-        raceDetails={Results}
-      />
-      <PositionListing raceDetails={Results} />
-      <div className="grid grid-cols-2 gap-4 mt-6">
-        <RaceGridScatterPlot raceDetails={Results} />
-        <FastestLapsBarChart raceDetails={Results} />
-      </div>
-    </main>
+    <>
+      <RaceSelection />
+      <Suspense fallback={<div>loading.....</div>}>
+        <Home year={year} race={race} />
+      </Suspense>
+    </>
   );
 }

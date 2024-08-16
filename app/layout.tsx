@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { defaults } from "chart.js";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -11,6 +12,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  defaults.font.family = "f-bold";
   return (
     <html lang="en">
       <body className="px-8">{children}</body>
