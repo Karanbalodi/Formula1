@@ -1,41 +1,33 @@
 "use client";
-import { useEffect } from "react";
 
-export default function Error({
-  error,
-  reset,
-}: {
-  error: Error;
-  reset: () => void;
-}) {
-//   useEffect(() => {
-//     console.error(error.message);
-//   }, [error]);
+import FlickeringGrid from "@/components/magicui/flickering-grid";
 
-  console.log("ERORRRRR", error.message, error.name, error.cause)
-
-  if (error.message.includes("404")) {
+export default function Error({ error }: { error: Error }) {
+  if (error.message.includes("50")) {
     return (
-      <div>
-        <h1>Custom 404 Error</h1>
-        <p>The requested page could not be found.</p>
-      </div>
-    );
-  }
-
-  if (error.message.includes("500")) {
-    return (
-      <div>
-        <h1>Custom 500 Error</h1>
-        <p>There was an internal server error.</p>
+      <div className="relative h-screen flex justify-center items-center -mx-8 -px-8">
+        <FlickeringGrid className="h-screen w-screen" />
+        <div className="absolute flex flex-col items-center">
+          <h1 className="font-f-bold text-9xl text-red">
+            {error.message?.split(":")?.[0]}
+          </h1>
+          <p className="text-lg">
+            Ergast server returned internal server error. Please Try again after
+            some time
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div>
-      <h1>Something Went Wrong</h1>
-      <button onClick={() => reset()}>Try Again</button>
+    <div className="relative h-screen flex justify-center items-center -mx-8 -px-8">
+      <FlickeringGrid className="h-screen w-screen" />
+      <div className="absolute flex flex-col items-center">
+        <h1 className="font-f-bold text-9xl text-red">
+          Some error occured: {error.message}
+        </h1>
+      </div>
     </div>
   );
 }

@@ -29,13 +29,15 @@ export interface CountryNameProps {
 
 export interface StandingsRowProps {
   name: string;
-  subtitle: string;
-  nationality: string;
-  points: string;
+  subtitle?: string;
+  nationality?: string;
+  points?: string;
   change?: string;
-  index: number;
+  index?: number;
   timing?: string;
   skipOneIndex?: boolean;
+  stopNumber?: string;
+  positionGain?: string;
 }
 
 export interface PositionListingProps {
@@ -224,15 +226,6 @@ export interface RaceSelectionFormProps {
   seasons: Array<Seasons>;
 }
 
-export interface LottieAnimationProps {
-  animationData: any;
-  loop?: boolean;
-  autoplay?: boolean;
-  className?: string;
-  height?: number | string;
-  width?: number | string;
-}
-
 export interface HomeProps {
   year?: string;
   race?: string;
@@ -261,4 +254,28 @@ export interface LapChartProps {
       lapData: Array<{ x: number; y: number }>;
     }
   >;
+}
+
+export interface LapData {
+  number: string;
+  Timings: Array<{
+    driverId: string;
+    position: string;
+    time: string;
+  }>;
+}
+
+export interface PitStop {
+  driverId: string;
+  lap: string;
+  stop: string;
+  time: string;
+  duration: string;
+}
+
+export interface LapGainersLosers {
+  driverId: string;
+  currentPosition: string;
+  previousPosition: string;
+  positionChange: number;
 }

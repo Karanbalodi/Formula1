@@ -73,11 +73,11 @@ export const Dropdown: FC<DropdownProps> = ({
         {!!error && error}
       </div>
 
-      {isOpen && (
+      {isOpen && !loading && (
         <ul className="absolute z-[9999] w-full mt-2 bg-white border border-gray-300 rounded-md shadow-lg h-96 overflow-scroll">
-          {options.map((option) => (
+          {options.map((option, index) => (
             <li
-              key={option.id}
+              key={`${option.id}_${index}`}
               onClick={() => handleOptionClick(option)}
               className="cursor-pointer py-2 px-4 hover:bg-gray-100"
             >

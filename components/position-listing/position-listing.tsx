@@ -6,7 +6,7 @@ import { getConstructorRanking } from "@/utils";
 
 export const PositionListing: FC<PositionListingProps> = ({ raceDetails }) => {
   const topThree = raceDetails?.slice(0, 3);
-  const restDrivers = raceDetails?.slice(4);
+  const restDrivers = raceDetails?.slice(3);
   const constructorRanking = getConstructorRanking(raceDetails);
 
   return (

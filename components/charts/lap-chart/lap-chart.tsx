@@ -51,11 +51,7 @@ export const LapChart: FC<LapChartProps> = ({ laps }) => {
   };
 
   return (
-    <div className="mt-6">
-      <p className="text-lg">Lap Position vs Lap Number</p>
-      <span className="text-xs text-grey-8a">
-        Hover on points to see lap time for a driver
-      </span>
+    <>
       <Line
         data={chartData}
         height={40}
@@ -77,6 +73,6 @@ export const LapChart: FC<LapChartProps> = ({ laps }) => {
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 };

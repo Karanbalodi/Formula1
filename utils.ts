@@ -8,7 +8,9 @@ import {
   ConstructorStandingsData,
   DriverStandings,
   DriverStandingsData,
+  LapData,
   LapDetails,
+  LapGainersLosers,
   RacingData,
   Schedule,
   Seasons,
@@ -301,3 +303,42 @@ export const formatSnakeCase = (snakeStr: string): string => {
 
   return formattedStr;
 };
+
+export const convertToTimeFormat = (value: string) => {
+  const str = value?.split(":");
+  const minute = str?.[0];
+  const seconds = str?.[1]?.split(".")?.[0];
+  const ms = str?.[1]?.split(".")?.[1];
+
+  return `${minute}m ${seconds}s ${ms}ms`;
+};
+
+export function calculateGainersAndLosers(
+  currentLap: LapData,
+  previousLap: LapData
+): Array<LapGainersLosers> {
+  const positionChanges = currentLap.Timings.map((driver) => {
+    const previousDriver = previousLap.Timings.find(
+      (d) => d.driverId === driver.driverId
+    );
+    let positionChange;
+    if (previousDriver) {
+      positionChange =
+        parseInt(previousDriver.position) - parseInt(driver.position);
+    } else {
+      positionChange = 0;
+    }
+    return {
+      driverId: driver.driverId,
+      currentPosition: driver.position,
+      previousPosition: previousDriver ? previousDriver.position : "0",
+      positionChange: positionChange,
+    };
+  });
+
+  const sortedByGains = [...positionChanges].sort(
+    (a, b) => b.positionChange - a.positionChange
+  );
+
+  return sortedByGains;
+}

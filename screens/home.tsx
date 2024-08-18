@@ -7,7 +7,6 @@ import { FC } from "react";
 import { HomeProps } from "@/types";
 import { RaceInformation } from "@/components/race-information/race-information";
 import { LapChartServer } from "@/components/charts/lap-chart/lap-chart-server";
-import { notFound } from "next/navigation";
 
 export const Home: FC<HomeProps> = async ({ year, race }) => {
   let currentRace;
@@ -39,7 +38,13 @@ export const Home: FC<HomeProps> = async ({ year, race }) => {
         <RaceGridScatterPlot raceDetails={Results} />
         <FastestLapsBarChart raceDetails={Results} />
       </div>
-      <LapChartServer year={season} race={round} />
+      <div className="mt-6">
+        <p className="text-lg">Race Timeline</p>
+        <p className="text-xs text-grey-8a mb-9">
+          click on a lap to view lap summary
+        </p>
+        <LapChartServer year={season} race={round} />
+      </div>
     </main>
   );
 };
