@@ -12,7 +12,7 @@ export const Home: FC<HomeProps> = async ({
   season: selectedSeason,
   round: selectedRound,
 }) => {
-  await new Promise(() => {});
+
   let currentRace;
   if (!!selectedSeason) {
     currentRace = await getRaceData({
