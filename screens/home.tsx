@@ -12,7 +12,6 @@ export const Home: FC<HomeProps> = async ({
   season: selectedSeason,
   round: selectedRound,
 }) => {
-
   let currentRace;
   if (!!selectedSeason) {
     currentRace = await getRaceData({
@@ -25,7 +24,7 @@ export const Home: FC<HomeProps> = async ({
 
   const { raceName, Circuit, Results, round, date, time, season } = currentRace;
   return (
-    <main>
+    <main className="mt-6">
       <RaceInformation
         date={date}
         time={time}
@@ -44,13 +43,7 @@ export const Home: FC<HomeProps> = async ({
         <RaceGridScatterPlot raceDetails={Results} />
         <FastestLapsBarChart raceDetails={Results} />
       </div>
-      <div className="mt-6">
-        <p className="text-lg">Race Timeline</p>
-        <p className="text-xs text-grey-8a mb-9">
-          click on a lap to view lap summary
-        </p>
-        <LapChartServer year={season} race={round} />
-      </div>
+      <LapChartServer year={season} race={round} />
     </main>
   );
 };

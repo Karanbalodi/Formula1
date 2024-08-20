@@ -37,11 +37,11 @@ export const FastestLap: FC<FastestLapProps> = ({ details }) => {
             <BiTimer size={20} />
             <p className="ml-1">{details.time}</p>
           </div>
-          <div className="text-white text-sm flex items-center mt-1 ml-1">
+          <div className="text-white text-sm flex items-center mt-1">
             <FaFlagCheckered size={16} />
             <p className="ml-1">{details.lap} lap</p>
           </div>
-          <div className="text-white text-sm flex items-center mt-1 ml-1">
+          <div className="text-white text-sm flex items-center mt-1">
             <IoSpeedometerOutline size={16} />
             <p className="ml-1">Average speed of lap</p>
           </div>

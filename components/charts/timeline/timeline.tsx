@@ -8,8 +8,8 @@ import {
   convertToTimeFormat,
   formatSnakeCase,
 } from "@/utils";
-import { useState } from "react";
-import { PiPlayCircle } from "react-icons/pi";
+import { useEffect, useRef, useState } from "react";
+import { PiPlayCircle, PiPauseCircle } from "react-icons/pi";
 
 interface HorizontalTimelineProps {
   laps: LapData[];
@@ -17,11 +17,53 @@ interface HorizontalTimelineProps {
 }
 
 const HorizontalTimeline = ({ laps, pitStops }: HorizontalTimelineProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const [selectedLap, setSelectedLap] = useState<LapData>(laps?.[0]);
   const [gainers, setGainers] = useState<Array<LapGainersLosers>>(
     calculateGainersAndLosers(laps?.[0], laps[0])
   );
   const [playSummary, setPlaySummary] = useState<boolean>(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (playSummary) {
+      setSelectedLap(laps?.[currentIndex]);
+      const intervalId = setInterval(() => {
+        setCurrentIndex((prevIndex) => {
+          if (prevIndex < laps.length - 1) {
+            const nextIndex = prevIndex + 1;
+            setSelectedLap(laps?.[nextIndex]);
+            setPitstopsData(findPitstops(laps[nextIndex].number));
+            setGainers(
+              calculateGainersAndLosers(laps[nextIndex], laps[prevIndex])
+            );
+            if (nextIndex % 9 === 0) {
+              const scrollValue =
+                nextIndex + 9 < laps.length - 1 ? nextIndex : laps.length - 1;
+              scrollToIndex(scrollValue);
+            }
+            return nextIndex;
+          } else {
+            setPlaySummary(false);
+            clearInterval(intervalId);
+            return prevIndex;
+          }
+        });
+      }, 2000);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [playSummary, laps]);
+
+  const scrollToIndex = (index: number) => {
+    if (containerRef.current && containerRef.current?.children[index]) {
+      containerRef.current?.children[index].scrollIntoView({
+        behavior: "smooth",
+        inline: "start",
+      });
+    }
+  };
 
   const findPitstops = (lapNumber: string) => {
     const pitStopsInLap = pitStops.filter(
@@ -36,65 +78,68 @@ const HorizontalTimeline = ({ laps, pitStops }: HorizontalTimelineProps) => {
 
   const handleLapClick = (lap: LapData, index: number) => {
     setPlaySummary(false);
+    setCurrentIndex(index);
     setSelectedLap(lap);
     setPitstopsData(findPitstops(lap.number));
     setGainers(calculateGainersAndLosers(lap, laps[index - 1] ?? laps[0]));
   };
 
   const handlePlay = () => {
-    setPlaySummary(true);
-    setSelectedLap(laps?.[0]);
-    for (let i = 1; i < laps.length; i++) {
-      setTimeout(() => {
-        setSelectedLap(laps?.[i]);
-        setPitstopsData(findPitstops(laps[i].number));
-        setGainers(calculateGainersAndLosers(laps[i], laps[i - 1]));
-      }, 3000 * i);
-    }
+    setPlaySummary((prev) => !prev);
   };
 
   const losers = [...gainers]?.reverse();
 
   return (
     <>
-      <p
-        className="flex items-center text-blue-500 text-sm mt-3 cursor-pointer hover:text-blue-900"
-        onClick={handlePlay}
-      >
-        {playSummary ? "Playing summary...." : "Play Summary"}
-        <PiPlayCircle size={24} className="ml-1" />
-      </p>
-      <div className="flex flex-col overflow-scroll p-4">
-        <div className="flex">
-          {laps?.map((lap, index) => {
-            const lapNumber = Number(lap.number);
-            const selectedLapNumber = Number(selectedLap?.number);
-            return (
-              <div key={lap.number}>
-                <span className="text-xs -ml-2"> Lap {lap?.number}</span>
-                <div className="relative flex items-center">
+      <div className="flex justify-between items-center mt-12 mb-4">
+        <div>
+          <p className="text-xl">Race Timeline</p>
+          <p className="text-xs text-grey-8a">
+            click on a lap to view lap summary
+          </p>
+        </div>
+        <div>
+          <p
+            className="flex items-center text-blue-500 text-md cursor-pointer hover:text-blue-900"
+            onClick={handlePlay}
+          >
+            {playSummary ? "Playing summary...." : "Play Summary"}
+            {playSummary ? (
+              <PiPauseCircle size={24} className="ml-1" />
+            ) : (
+              <PiPlayCircle size={24} className="ml-1" />
+            )}
+          </p>
+        </div>
+      </div>
+      <div ref={containerRef} className="flex overflow-scroll p-4 -mx-8 px-8">
+        {laps?.map((lap, index) => {
+          const lapNumber = Number(lap.number);
+          const selectedLapNumber = Number(selectedLap?.number);
+          return (
+            <div key={lap.number}>
+              <span className="text-xs -ml-2"> Lap {lap?.number}</span>
+              <div className="relative flex items-center">
+                <div
+                  className={`z-[9999] cursor-pointer ${
+                    selectedLapNumber >= lapNumber ? "bg-red" : "bg-borderColor"
+                  } h-6 w-6 rounded-full mr-10`}
+                  onClick={() => handleLapClick(lap, index)}
+                />
+                {index < laps.length - 1 && (
                   <div
-                    className={`z-[9999] cursor-pointer ${
-                      selectedLapNumber >= lapNumber
+                    className={`${
+                      selectedLapNumber - 1 >= lapNumber
                         ? "bg-red"
                         : "bg-borderColor"
-                    } h-6 w-6 rounded-full mr-10`}
-                    onClick={() => handleLapClick(lap, index)}
+                    } absolute h-2 w-16`}
                   />
-                  {index < laps.length - 1 && (
-                    <div
-                      className={`${
-                        selectedLapNumber - 1 >= lapNumber
-                          ? "bg-red"
-                          : "bg-borderColor"
-                      } absolute h-2 w-16`}
-                    />
-                  )}
-                </div>
+                )}
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </div>
 
       {selectedLap !== null && (
@@ -152,7 +197,7 @@ const HorizontalTimeline = ({ laps, pitStops }: HorizontalTimelineProps) => {
               </div>
             </div>
             <div>
-              <p className="text-md mb-3">Top 5 drivers in this lap</p>
+              <p className="text-md mb-3">Top 5 driver position in this lap</p>
               <div className="rounded-md overflow-hidden mt-4">
                 <StandingsRow name="Driver Name" timing={"Timing"} />
                 <div className="mt-2" />

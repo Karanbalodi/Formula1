@@ -11,7 +11,7 @@ export const RaceInformation: FC<RaceInformationProps> = ({
   country,
 }) => (
   <>
-    <p className="font-f-bold text-red text-4xl mt-6">{raceName}</p>
+    <p className="font-f-bold text-red text-4xl">{raceName}</p>
     <p className="font-f-bold text-blackSecondary text-xl">{circuit}</p>
     <p className="text-grey-8a text-sm">{formatDate(`${date}T${time}`)}</p>
     <p className="text-grey-8a text-sm">
