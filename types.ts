@@ -1,6 +1,57 @@
 import { ParsedUrlQuery } from "querystring";
 
-export interface HeaderProps {}
+export interface SearchParams extends ParsedUrlQuery {
+  season?: string;
+  round?: string;
+}
+
+export interface RaceSelectionProps {}
+
+export interface RaceSelectionFormProps extends RaceSelectionProps {
+  seasons: Array<Seasons>;
+}
+
+export interface PracticeSession {
+  date: string;
+  time: string;
+}
+
+export interface Circuit {
+  circuitId: string;
+  url: string;
+  circuitName: string;
+  Location: Location;
+}
+
+export interface Schedule {
+  season: string;
+  round: string;
+  url: string;
+  raceName: string;
+  Circuit: Circuit;
+  date: string;
+  time: string;
+  FirstPractice: PracticeSession;
+  SecondPractice: PracticeSession;
+  ThirdPractice: PracticeSession;
+  Qualifying: PracticeSession;
+}
+
+export interface DropdownProps {
+  icon: any;
+  label: string;
+  options: Array<any>;
+  loading?: boolean;
+  onChange: (value: any) => void;
+  error?: string;
+  value?: string;
+}
+
+export interface LabelProps {
+  label: string;
+}
+
+export interface HomeProps extends SearchParams {}
 
 export interface RankingCardProps {
   name: string;
@@ -12,6 +63,7 @@ export interface RankingCardProps {
   driverNumber: string;
   constructor: Constructor;
   nationality: string;
+  driverId: string;
 }
 
 export type NationalityToCountryCode = {
@@ -171,19 +223,6 @@ export interface FastestLapsBarChartProps {
   raceDetails: Array<RacingData>;
 }
 
-export interface SearchParams extends ParsedUrlQuery {
-  year?: string;
-  race?: string;
-}
-
-export interface DropdownProps {
-  icon: any;
-  label: string;
-  options: Array<any>;
-  loading?: boolean;
-  onChange: (value: any) => void;
-}
-
 export interface Seasons {
   season: string;
   url: string;
@@ -194,41 +233,6 @@ export interface Location {
   long: string;
   locality: string;
   country: string;
-}
-
-export interface Circuit {
-  circuitId: string;
-  url: string;
-  circuitName: string;
-  Location: Location;
-}
-
-export interface PracticeSession {
-  date: string;
-  time: string;
-}
-
-export interface Schedule {
-  season: string;
-  round: string;
-  url: string;
-  raceName: string;
-  Circuit: Circuit;
-  date: string;
-  time: string;
-  FirstPractice: PracticeSession;
-  SecondPractice: PracticeSession;
-  ThirdPractice: PracticeSession;
-  Qualifying: PracticeSession;
-}
-
-export interface RaceSelectionFormProps {
-  seasons: Array<Seasons>;
-}
-
-export interface HomeProps {
-  year?: string;
-  race?: string;
 }
 
 export interface RaceInformationProps {
@@ -279,3 +283,5 @@ export interface LapGainersLosers {
   previousPosition: string;
   positionChange: number;
 }
+
+export type DropdownCompatibleDataLabels = "season" | "schedule";

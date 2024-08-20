@@ -25,6 +25,7 @@ export const PositionListing: FC<PositionListingProps> = ({ raceDetails }) => {
             index={index + 1}
             constructor={drivers.Constructor}
             nationality={drivers.Driver.nationality}
+            driverId={drivers.Driver.driverId}
           />
         ))}
       </div>

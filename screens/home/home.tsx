@@ -8,16 +8,22 @@ import { HomeProps } from "@/types";
 import { RaceInformation } from "@/components/race-information/race-information";
 import { LapChartServer } from "@/components/charts/lap-chart/lap-chart-server";
 
-export const Home: FC<HomeProps> = async ({ year, race }) => {
+export const Home: FC<HomeProps> = async ({
+  season: selectedSeason,
+  round: selectedRound,
+}) => {
+  await new Promise(() => {});
   let currentRace;
-  if (!!year) {
-    currentRace = await getRaceData({ year, round: race });
+  if (!!selectedSeason) {
+    currentRace = await getRaceData({
+      season: selectedSeason,
+      round: selectedRound,
+    });
   } else {
     currentRace = await getRecentRaceData();
   }
 
   const { raceName, Circuit, Results, round, date, time, season } = currentRace;
-
   return (
     <main>
       <RaceInformation

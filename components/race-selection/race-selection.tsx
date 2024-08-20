@@ -1,16 +1,12 @@
+import { FC } from "react";
+import { RaceSelectionProps } from "@/types";
 import { getAvailableSeasons } from "@/queries/queries";
+
 import { RaceSelectionForm } from "./race-selection-form";
 
-export const RaceSelection = async () => {
+export const RaceSelection: FC<RaceSelectionProps> = async () => {
   const availableSeasons = await getAvailableSeasons();
-
-  const {
-    MRData: {
-      SeasonTable: { Seasons },
-    },
-  } = availableSeasons;
-
-  const seasons = Seasons?.reverse()
+  const seasons = availableSeasons?.reverse();
 
   return <RaceSelectionForm seasons={seasons} />;
 };

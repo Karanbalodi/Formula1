@@ -4,72 +4,78 @@ import { FC, useState } from "react";
 import { redirect } from "next/navigation";
 import { TbCalendarSearch } from "react-icons/tb";
 import { FaFlagCheckered } from "react-icons/fa6";
-
-import { Dropdown } from "../dropdown/dropdown";
-import { RaceSelectionFormProps, Schedule } from "@/types";
-import { getAvailableRacesInSeason } from "@/queries/queries";
 import { createDropdownCompatibleData } from "@/utils";
+import { RaceSelectionFormProps, Schedule } from "@/types";
+
+import { Label } from "./label";
+import { Dropdown } from "../dropdown/dropdown";
+import { getAvailableRacesInSeason } from "@/queries/queries";
 
 export const RaceSelectionForm: FC<RaceSelectionFormProps> = ({ seasons }) => {
   const [selectedSeason, setSelectedSeason] = useState<string>();
-  const [availableRaces, setAvailableRaces] = useState<Array<Schedule>>([]);
-  const [selectedRace, setSelectedRace] = useState<string>();
+  const [availableRounds, setAvailableRounds] = useState<Array<Schedule>>([]);
+  const [selectedRound, setSelectedRound] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [seasonError, setSeasonError] = useState<string>();
+  const [raceError, setRaceError] = useState<string>();
 
   const fetchAvailableRacesInSeason = async (season: string) => {
     setLoading(true);
-    const res = await getAvailableRacesInSeason(season);
-    const {
-      MRData: {
-        RaceTable: { Races },
-      },
-    } = res;
-
-    setAvailableRaces(Races);
+    const races = await getAvailableRacesInSeason(season);
+    setAvailableRounds(races);
     setLoading(false);
   };
 
   const handleSeason = (value: string) => {
-    // TODO: add loader
+    setSeasonError("");
     setSelectedSeason(value);
     fetchAvailableRacesInSeason(value);
   };
 
   const handleRace = (value: string) => {
-    setSelectedRace(value);
+    setSelectedRound(value);
   };
 
   const handleSubmit = () => {
-    redirect(`/?year=${selectedSeason}&race=${selectedRace}`);
+    if (!!selectedRound && !!selectedSeason) {
+      redirect(`/?season=${selectedSeason}&round=${selectedRound}`);
+    } else if (!!selectedSeason) {
+      setRaceError("Select Round");
+    } else {
+      setSeasonError("Select Season");
+    }
   };
 
   return (
     <form
       action={handleSubmit}
-      className="flex py-6 pb-8 border-b border-borderColor border-solid items-end"
+      className="flex pt-6 pb-8 border-b border-borderColor border-solid items-end"
     >
       <div className="mr-4">
-        <label className="text-xs text-grey-8a block mb-2">Select Season</label>
+        <Label label="Select Season" />
         <Dropdown
           icon={<TbCalendarSearch size={18} />}
           label="Season"
           options={createDropdownCompatibleData(seasons, "season")}
           onChange={handleSeason}
+          error={seasonError}
+          value={selectedSeason}
         />
       </div>
       <div>
-        <label className="text-xs text-grey-8a block mb-2">Select Race</label>
+        <Label label="Select Round" />
         <Dropdown
           icon={<FaFlagCheckered size={16} />}
           label="Race"
-          options={createDropdownCompatibleData(availableRaces, "schedule")}
+          options={createDropdownCompatibleData(availableRounds, "schedule")}
           onChange={handleRace}
+          error={raceError}
           loading={loading}
         />
       </div>
 
       <button
-        className="rounded-md  px-6 h-10 ml-4 text-white bg-red"
+        className="rounded-md px-6 h-10 ml-4 text-white bg-red font-bold shadow-md transform transition duration-150 active:scale-95 active:shadow-none"
         type="submit"
         onClick={handleSubmit}
       >

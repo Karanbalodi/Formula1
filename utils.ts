@@ -8,6 +8,7 @@ import {
   ConstructorStandingsData,
   DriverStandings,
   DriverStandingsData,
+  DropdownCompatibleDataLabels,
   LapData,
   LapDetails,
   LapGainersLosers,
@@ -124,10 +125,9 @@ export const createStandingsData = (
   };
 };
 
-export const loadDriverImage = (driverName: string) => {
+export const loadDriverImage = (driverId: string) => {
   try {
-    const driver = driverName?.toLowerCase()?.replace(/\s+/g, "_");
-    const url = require(`@/assets/drivers/${driver}_headshot.webp`);
+    const url = require(`@/assets/drivers/${driverId}_headshot.webp`);
     return url?.default;
   } catch (e) {
     return require(`@/assets/drivers/default.webp`).default;
@@ -217,7 +217,7 @@ export const createColorPicker = (
 
 export const createDropdownCompatibleData = (
   options: Array<Seasons | Schedule>,
-  type: "season" | "schedule"
+  type: DropdownCompatibleDataLabels
 ) => {
   if (type === "season") {
     const dropdownOptions = options.map((option) => ({

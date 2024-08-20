@@ -14,6 +14,7 @@ import { BiTimer } from "react-icons/bi";
 
 export const RankingCard: FC<RankingCardProps> = ({
   driverNumber,
+  driverId,
   name,
   constructor,
   nationality,
@@ -30,6 +31,7 @@ export const RankingCard: FC<RankingCardProps> = ({
         ? constructor.constructorId
         : "default"
     ];
+
   return (
     <div
       className="border border-borderColor rounded-md overflow-hidden"
@@ -39,7 +41,7 @@ export const RankingCard: FC<RankingCardProps> = ({
     >
       <div className="flex">
         <Image
-          src={loadDriverImage(name)}
+          src={loadDriverImage(driverId)}
           alt={name}
           width={160}
           height={100}

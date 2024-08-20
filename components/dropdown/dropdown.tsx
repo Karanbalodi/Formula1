@@ -8,9 +8,11 @@ export const Dropdown: FC<DropdownProps> = ({
   options,
   onChange,
   loading,
+  error: ParentError,
+  value,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [selectedOption, setSelectedOption] = useState(value);
   const [error, setError] = useState<string>();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -55,11 +57,13 @@ export const Dropdown: FC<DropdownProps> = ({
     >
       <div
         onClick={toggleDropdown}
-        className="inline-flex items-center w-full border rounded-md border-gray-300 shadow-sm px-3 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
+        className="inline-flex items-center w-full border rounded-md border-gray-300 shadow-sm px-3 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 cursor-pointer"
       >
         <span className="mr-3 mb-0.5">{icon}</span>
         <span
-          className={`${(!selectedOption || loading) && "text-gray-400"} grow`}
+          className={`${
+            (!selectedOption || loading) && "text-gray-400"
+          } grow w-40 truncate`}
         >
           {loading
             ? "Fetching schedule...."
@@ -71,6 +75,7 @@ export const Dropdown: FC<DropdownProps> = ({
       </div>
       <div className="absolute text-xs text-red h-4 mt-1">
         {!!error && error}
+        {!!ParentError && ParentError}
       </div>
 
       {isOpen && !loading && (
@@ -79,7 +84,7 @@ export const Dropdown: FC<DropdownProps> = ({
             <li
               key={`${option.id}_${index}`}
               onClick={() => handleOptionClick(option)}
-              className="cursor-pointer py-2 px-4 hover:bg-gray-100"
+              className="text-sm cursor-pointer py-2 px-4 hover:bg-gray-100"
             >
               {option.displayValue}
             </li>
