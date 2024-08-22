@@ -16,6 +16,7 @@ import { FastestLapsBarChartProps } from "@/types";
 import { fastestLapConstants } from "@/constants/chart-constants";
 import { createColorPicker, isColorAvailable } from "@/utils";
 import { randomColors, teamColors } from "@/constants/constants";
+import { DataMissingError } from "@/components/errors/data-missing-error";
 
 ChartJS.register(
   CategoryScale,
@@ -60,15 +61,24 @@ const FastestLapsBarChart: FC<FastestLapsBarChartProps> = ({ raceDetails }) => {
     ],
   };
 
+  const isLapDataAvailable = !!raceDetails?.[0]?.FastestLap;
+
   return (
     <div className="w-[100%]">
       <p className="text-lg mb-3">Fastest laps by driver</p>
-      <Bar
-        height={70}
-        width="100%"
-        data={chartData}
-        options={fastestLapConstants}
-      />
+      {isLapDataAvailable ? (
+        <Bar
+          height={70}
+          width="100%"
+          data={chartData}
+          options={fastestLapConstants}
+        />
+      ) : (
+        <DataMissingError
+          msg="Unfortunately, lap speed is not available for this race"
+          className="mt-40"
+        />
+      )}
     </div>
   );
 };

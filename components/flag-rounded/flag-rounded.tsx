@@ -4,12 +4,13 @@ import { FC } from "react";
 
 export const FlagRounded: FC<FlagRoundedProps> = ({ code }) => {
   return (
-    <div className="rounded-full w-6 h-6 bg-rose-100 overflow-hidden flex justify-center border border-borderColor">
+    <div className="flex relative justify-center border border-borderColor items-center box-border overflow-hidden align-middle outline-none rounded-full w-6 h-6">
       <Image
-        src={`https://flagcdn.com/w1280/${code}.webp`}
+        src={`https://flagcdn.com/${code}.svg`}
         alt="country"
-        width={80}
-        height={20}
+        width={30}
+        height={16}
+        className="flex object-cover w-full h-full transition-opacity !duration-500"
       />
     </div>
   );

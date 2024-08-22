@@ -12,13 +12,15 @@ const MapComponent = dynamic(() => import("../map-component/map-component"), {
 });
 
 export const RaceDetails: FC<RaceDetailsProps> = async ({
+  season,
+  round,
   latitude,
   longitude,
   raceDetails,
 }) => {
   const fastestLap = findFastestLap(raceDetails);
-  const driverStandings = await getDriverRanking("2024", "14");
-  const constructorStandings = await getConstructorRanking("2024", "14");
+  const driverStandings = await getDriverRanking(season, round);
+  const constructorStandings = await getConstructorRanking(season, round);
 
   const { drivers, constructors } = createStandingsData(
     driverStandings,

@@ -39,7 +39,9 @@ export function convertToOrdinal(number: number) {
   return number + suffix;
 }
 export const findFastestLap = (raceDetails: Array<RacingData>): LapDetails => {
-  const details = raceDetails.find((driver) => driver.FastestLap.rank === "1");
+  const details = raceDetails.find(
+    (driver) => driver?.FastestLap?.rank === "1"
+  );
   if (!!details) {
     return createDetails(details);
   }
@@ -177,7 +179,7 @@ export const getConstructorRanking = (raceData: Array<RacingData>) => {
     .map(([constructor, details]) => ({
       constructor,
       nationality: details.nationality,
-      points: details.points,
+      points: String(details.points),
       drivers: Array.from(details.drivers), // Convert Set to Array
     }));
 
@@ -261,7 +263,7 @@ export const formatDate = (dateStr: string) => {
 };
 
 export const processLapData = (lapData: any) => {
-  const laps = lapData.Races[0].Laps;
+  const laps = lapData?.Races?.[0]?.Laps;
   const driverLaps: Record<
     string,
     {
@@ -273,8 +275,8 @@ export const processLapData = (lapData: any) => {
 
   const pickColor = createColorPicker(randomColors);
 
-  laps.forEach((lap: any) => {
-    lap.Timings.forEach((timing: any) => {
+  laps?.forEach((lap: any) => {
+    lap?.Timings?.forEach((timing: any) => {
       const driverId = timing.driverId;
       const colors = pickColor();
       if (!driverLaps[driverId]) {
@@ -317,9 +319,9 @@ export function calculateGainersAndLosers(
   currentLap: LapData,
   previousLap: LapData
 ): Array<LapGainersLosers> {
-  const positionChanges = currentLap.Timings.map((driver) => {
-    const previousDriver = previousLap.Timings.find(
-      (d) => d.driverId === driver.driverId
+  const positionChanges = currentLap?.Timings?.map((driver) => {
+    const previousDriver = previousLap?.Timings?.find(
+      (d) => d?.driverId === driver?.driverId
     );
     let positionChange;
     if (previousDriver) {
@@ -334,9 +336,9 @@ export function calculateGainersAndLosers(
       previousPosition: previousDriver ? previousDriver.position : "0",
       positionChange: positionChange,
     };
-  });
+  }) ?? [];
 
-  const sortedByGains = [...positionChanges].sort(
+  const sortedByGains = [...positionChanges]?.sort(
     (a, b) => b.positionChange - a.positionChange
   );
 

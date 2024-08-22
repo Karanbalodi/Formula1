@@ -7,6 +7,7 @@ import { FC } from "react";
 import { HomeProps } from "@/types";
 import { RaceInformation } from "@/components/race-information/race-information";
 import { LapChartServer } from "@/components/charts/lap-chart/lap-chart-server";
+import { UpcomingRace } from "@/components/upcoming-race/upcoming-race";
 
 export const Home: FC<HomeProps> = async ({
   season: selectedSeason,
@@ -22,7 +23,12 @@ export const Home: FC<HomeProps> = async ({
     currentRace = await getRecentRaceData();
   }
 
+  if (!currentRace) {
+    return <UpcomingRace />;
+  }
+
   const { raceName, Circuit, Results, round, date, time, season } = currentRace;
+
   return (
     <main className="mt-6">
       <RaceInformation
@@ -37,13 +43,15 @@ export const Home: FC<HomeProps> = async ({
         latitude={Circuit?.Location?.lat}
         longitude={Circuit?.Location?.long}
         raceDetails={Results}
+        season={selectedSeason ?? season}
+        round={selectedRound ?? round}
       />
       <PositionListing raceDetails={Results} />
       <div className="grid grid-cols-2 gap-4 mt-6">
         <RaceGridScatterPlot raceDetails={Results} />
         <FastestLapsBarChart raceDetails={Results} />
       </div>
-      <LapChartServer year={season} race={round} />
+      <LapChartServer season={season} round={round} />
     </main>
   );
 };

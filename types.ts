@@ -163,6 +163,8 @@ export interface RaceDetailsProps {
   latitude: number;
   longitude: number;
   raceDetails: Array<RacingData>;
+  season?: string;
+  round?: string;
 }
 
 export interface LapDetails {
@@ -245,8 +247,8 @@ export interface RaceInformationProps {
 }
 
 export interface LapChartServerProps {
-  year?: string;
-  race?: string;
+  season?: string;
+  round?: string;
 }
 
 export interface LapChartProps {
@@ -285,3 +287,9 @@ export interface LapGainersLosers {
 }
 
 export type DropdownCompatibleDataLabels = "season" | "schedule";
+
+export interface DataMissingErrorProps {
+  msg: string;
+  className: string;
+  iconSize?: number;
+}

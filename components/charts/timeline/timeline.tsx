@@ -21,7 +21,7 @@ const HorizontalTimeline = ({ laps, pitStops }: HorizontalTimelineProps) => {
 
   const [selectedLap, setSelectedLap] = useState<LapData>(laps?.[0]);
   const [gainers, setGainers] = useState<Array<LapGainersLosers>>(
-    calculateGainersAndLosers(laps?.[0], laps[0])
+    calculateGainersAndLosers(laps?.[0], laps?.[0])
   );
   const [playSummary, setPlaySummary] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -31,16 +31,16 @@ const HorizontalTimeline = ({ laps, pitStops }: HorizontalTimelineProps) => {
       setSelectedLap(laps?.[currentIndex]);
       const intervalId = setInterval(() => {
         setCurrentIndex((prevIndex) => {
-          if (prevIndex < laps.length - 1) {
+          if (prevIndex < laps?.length - 1) {
             const nextIndex = prevIndex + 1;
             setSelectedLap(laps?.[nextIndex]);
-            setPitstopsData(findPitstops(laps[nextIndex].number));
+            setPitstopsData(findPitstops(laps?.[nextIndex]?.number));
             setGainers(
-              calculateGainersAndLosers(laps[nextIndex], laps[prevIndex])
+              calculateGainersAndLosers(laps?.[nextIndex], laps?.[prevIndex])
             );
             if (nextIndex % 9 === 0) {
               const scrollValue =
-                nextIndex + 9 < laps.length - 1 ? nextIndex : laps.length - 1;
+                nextIndex + 9 < laps?.length - 1 ? nextIndex : laps.length - 1;
               scrollToIndex(scrollValue);
             }
             return nextIndex;
@@ -66,7 +66,7 @@ const HorizontalTimeline = ({ laps, pitStops }: HorizontalTimelineProps) => {
   };
 
   const findPitstops = (lapNumber: string) => {
-    const pitStopsInLap = pitStops.filter(
+    const pitStopsInLap = pitStops?.filter(
       (pitStop: PitStop) => pitStop.lap === lapNumber
     );
     return pitStopsInLap;

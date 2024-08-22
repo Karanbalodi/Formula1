@@ -25,7 +25,7 @@ export default function Error({ error }: { error: Error }) {
       <FlickeringGrid className="h-screen w-screen" />
       <div className="absolute flex flex-col items-center">
         <h1 className="font-f-bold text-9xl text-red">
-          Some error occured: {error.message}
+          Some error occured. Please try again
         </h1>
       </div>
     </div>
