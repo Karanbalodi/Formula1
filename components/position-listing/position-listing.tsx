@@ -8,7 +8,7 @@ export const PositionListing: FC<PositionListingProps> = ({ raceDetails }) => {
   const topThree = raceDetails?.slice(0, 3);
   const restDrivers = raceDetails?.slice(3);
   const constructorRanking = getConstructorRanking(raceDetails);
-
+  
   return (
     <section>
       <p className="font-f-bold text-2xl my-4 text-red">Race Rankings</p>

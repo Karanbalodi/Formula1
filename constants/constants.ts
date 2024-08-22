@@ -15,6 +15,7 @@ export const teamColors: { [key: string]: { from: string; to: string } } = {
   kick_sauber: { from: "#22c55e", to: "#166534" },
   rb: { from: "#6366f1", to: "#3730a3" },
   default: { from: "#ef4444", to: "#991b1b" },
+  force_india: { from: "#4ade80", to: "#fb923c" },
 };
 
 export const nationalityToCountryCode: NationalityToCountryCode = {
@@ -40,6 +41,7 @@ export const nationalityToCountryCode: NationalityToCountryCode = {
   Belgian: "be",
   Portuguese: "pt",
   Argentinian: "ar",
+  Argentine: "ar",
   Chilean: "cl",
   Colombian: "co",
   Turkish: "tr",
@@ -119,6 +121,8 @@ export const nationalityToCountryCode: NationalityToCountryCode = {
   Djiboutian: "dj",
   Eritrean: "er",
   "South Sudanese": "ss",
+  "Venezuelan": "ve",
+  Uruguayan: 'uy'
 };
 
 export const mapOptions = {

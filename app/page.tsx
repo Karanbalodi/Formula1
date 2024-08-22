@@ -11,7 +11,7 @@ export default async function HomePage({
   const { season, round } = searchParams;
   return (
     <>
-      <RaceSelection />
+      <RaceSelection selectedSeason={season} />
       <Suspense
         fallback={
           <div role="status" className="w-full animate-pulse">

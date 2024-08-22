@@ -77,7 +77,6 @@ export const lapChartOptions = {
     tooltip: {
       callbacks: {
         title: (tooltipItem: any) => {
-          console.log(tooltipItem);
           return `Lap Time: ${tooltipItem?.[0]?.raw?.lapTime}`;
         },
         label: (tooltipItem: any) =>

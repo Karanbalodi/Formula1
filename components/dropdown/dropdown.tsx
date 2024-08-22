@@ -79,7 +79,7 @@ export const Dropdown: FC<DropdownProps> = ({
       </div>
 
       {isOpen && !loading && (
-        <ul className="absolute z-[9999] w-full mt-2 bg-white border border-gray-300 rounded-md shadow-lg h-96 overflow-scroll">
+        <ul className="absolute z-[9999] w-full mt-2 bg-white border border-gray-300 rounded-md shadow-lg max-h-96 overflow-scroll">
           {options.map((option, index) => (
             <li
               key={`${option.id}_${index}`}

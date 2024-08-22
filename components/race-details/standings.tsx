@@ -7,6 +7,7 @@ import {
   DriverStandingsData,
   StandingsProps,
 } from "@/types";
+import { DataMissingError } from "../errors/data-missing-error";
 
 // 0 -> Driver
 // 1 -> Constructor
@@ -51,6 +52,13 @@ export const Standings: FC<StandingsProps> = ({
                 index={index + 1}
               />
             )
+          )}
+          {constructorStandings?.length < 1 && (
+            <DataMissingError
+              iconSize={60}
+              className="mt-4"
+              msg="Constructor ranking unavailable"
+            />
           )}
         </>
       );

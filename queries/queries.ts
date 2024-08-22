@@ -20,7 +20,7 @@ export async function getAvailableSeasons() {
 }
 
 // Using proxy to avoid CORS error
-export async function getAvailableRacesInSeason(season: string) {
+export async function getAvailableRacesInSeason(season?: string) {
   const res = await fetch(`${ERGAST_API}/${season}.json`);
 
   if (res.status !== 200) {

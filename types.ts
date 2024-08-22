@@ -5,7 +5,9 @@ export interface SearchParams extends ParsedUrlQuery {
   round?: string;
 }
 
-export interface RaceSelectionProps {}
+export interface RaceSelectionProps {
+  selectedSeason?: string
+}
 
 export interface RaceSelectionFormProps extends RaceSelectionProps {
   seasons: Array<Seasons>;

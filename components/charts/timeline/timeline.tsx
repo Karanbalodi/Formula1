@@ -73,7 +73,7 @@ const HorizontalTimeline = ({ laps, pitStops }: HorizontalTimelineProps) => {
   };
 
   const [pitstopsData, setPitstopsData] = useState<PitStop[]>(
-    findPitstops("0")
+    findPitstops("1")
   );
 
   const handleLapClick = (lap: LapData, index: number) => {
@@ -225,6 +225,11 @@ const HorizontalTimeline = ({ laps, pitStops }: HorizontalTimelineProps) => {
                 {pitstopsData?.length === 0 && (
                   <span className="text-sm text-grey-8a">
                     No pitstops in this lap
+                  </span>
+                )}
+                {!pitStops && (
+                  <span className="text-sm text-grey-8a">
+                    Pitstop data not available
                   </span>
                 )}
                 {pitstopsData?.map((pitStop: PitStop, index) => (

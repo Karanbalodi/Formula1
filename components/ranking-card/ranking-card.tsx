@@ -48,7 +48,7 @@ export const RankingCard: FC<RankingCardProps> = ({
         />
         <div className="px-3 py-3 w-full flex flex-col justify-between">
           <h3 className="font-f-bold text-white text-lg">
-            {driverNumber}. {name}
+            {!!driverNumber && `${driverNumber}.`} {name}
           </h3>
           <div className="flex items-center -mt-1">
             <div className="flex items-center">
@@ -68,7 +68,9 @@ export const RankingCard: FC<RankingCardProps> = ({
                 width={38}
                 height={44}
               />
-              <span className="text-white text-sm">{constructor.name}</span>
+              <span className="text-white text-sm ml-1">
+                {constructor.name}
+              </span>
             </div>
           </div>
           <div className="flex items-center">
@@ -91,7 +93,7 @@ export const RankingCard: FC<RankingCardProps> = ({
               <span className="text-grey-8a text-sm">
                 Points{" "}
                 <span className="text-blackSecondary font-f-bold text-md ml-2">
-                  {points}
+                  {Intl.NumberFormat("en-US").format(+Number(points)?.toFixed(0))}
                 </span>
               </span>
             </div>

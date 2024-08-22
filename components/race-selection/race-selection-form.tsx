@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { redirect } from "next/navigation";
 import { TbCalendarSearch } from "react-icons/tb";
 import { FaFlagCheckered } from "react-icons/fa6";
@@ -11,15 +11,28 @@ import { Label } from "./label";
 import { Dropdown } from "../dropdown/dropdown";
 import { getAvailableRacesInSeason } from "@/queries/queries";
 
-export const RaceSelectionForm: FC<RaceSelectionFormProps> = ({ seasons }) => {
-  const [selectedSeason, setSelectedSeason] = useState<string>();
+export const RaceSelectionForm: FC<RaceSelectionFormProps> = ({
+  seasons,
+  selectedSeason: searchedSeason,
+}) => {
+  const [selectedSeason, setSelectedSeason] = useState<string>(searchedSeason ?? '');
   const [availableRounds, setAvailableRounds] = useState<Array<Schedule>>([]);
   const [selectedRound, setSelectedRound] = useState<string>();
   const [loading, setLoading] = useState<boolean>(false);
   const [seasonError, setSeasonError] = useState<string>();
   const [raceError, setRaceError] = useState<string>();
 
-  const fetchAvailableRacesInSeason = async (season: string) => {
+  const preSelectSeason = useCallback(() => {
+    if (!!searchedSeason) {
+      fetchAvailableRacesInSeason(searchedSeason);
+    }
+  }, [searchedSeason]);
+
+  useEffect(() => {
+    preSelectSeason();
+  }, [preSelectSeason]);
+
+  const fetchAvailableRacesInSeason = async (season?: string) => {
     setLoading(true);
     const races = await getAvailableRacesInSeason(season);
     setAvailableRounds(races);

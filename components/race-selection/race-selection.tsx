@@ -4,9 +4,9 @@ import { getAvailableSeasons } from "@/queries/queries";
 
 import { RaceSelectionForm } from "./race-selection-form";
 
-export const RaceSelection: FC<RaceSelectionProps> = async () => {
+export const RaceSelection: FC<RaceSelectionProps> = async ({selectedSeason}) => {
   const availableSeasons = await getAvailableSeasons();
   const seasons = availableSeasons?.reverse();
 
-  return <RaceSelectionForm seasons={seasons} />;
+  return <RaceSelectionForm selectedSeason={selectedSeason} seasons={seasons} />;
 };
