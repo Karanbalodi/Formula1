@@ -2,7 +2,7 @@ import { COUNTRY_API, ERGAST_API, ERGAST_API_BACKUP } from "@/config";
 import { HomeProps } from "@/types";
 
 export async function getAvailableSeasons() {
-  const res = await fetch(`${ERGAST_API}/seasons.json?limit=200`);
+  const res = await fetch(`${ERGAST_API_BACKUP}/seasons.json?limit=200`);
 
   if (res.status !== 200) {
     throw new Error(`${res.status}: Failed to fetch data`, {
@@ -21,7 +21,7 @@ export async function getAvailableSeasons() {
 
 // Using proxy to avoid CORS error
 export async function getAvailableRacesInSeason(season?: string) {
-  const res = await fetch(`${ERGAST_API}/${season}.json`);
+  const res = await fetch(`/api/proxy?season=${season}`);
 
   if (res.status !== 200) {
     throw new Error(`${res.status}: Failed to fetch data`, {
@@ -39,7 +39,7 @@ export async function getAvailableRacesInSeason(season?: string) {
 }
 
 export async function getRecentRaceData() {
-  const res = await fetch(`${ERGAST_API}/current/last/results.json`);
+  const res = await fetch(`${ERGAST_API_BACKUP}/current/last/results.json`);
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
 
@@ -60,7 +60,7 @@ export async function getRecentRaceData() {
 
 export async function getDriverRanking(season?: string, round?: string) {
   const res = await fetch(
-    `${ERGAST_API}/${season}/${round}/driverStandings.json`
+    `${ERGAST_API_BACKUP}/${season}/${round}/driverStandings.json`
   );
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
@@ -77,7 +77,7 @@ export async function getDriverRanking(season?: string, round?: string) {
 
 export async function getConstructorRanking(season?: string, round?: string) {
   const res = await fetch(
-    `${ERGAST_API}/${season}/${round}/constructorStandings.json`
+    `${ERGAST_API_BACKUP}/${season}/${round}/constructorStandings.json`
   );
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
@@ -109,7 +109,7 @@ export async function getCountry(code: string) {
 
 export async function getRaceData({ season, round }: HomeProps) {
   const res = await fetch(
-    `${ERGAST_API}/${season}/${round}/results.json`
+    `${ERGAST_API_BACKUP}/${season}/${round}/results.json`
   );
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
@@ -131,7 +131,7 @@ export async function getRaceData({ season, round }: HomeProps) {
 
 export async function getLapChartData(season?: string, round?: string) {
   const res = await fetch(
-    `${ERGAST_API}/${season}/${round}/laps.json?limit=3000`
+    `${ERGAST_API_BACKUP}/${season}/${round}/laps.json?limit=3000`
   );
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
@@ -149,7 +149,7 @@ export async function getLapChartData(season?: string, round?: string) {
 
 export const getPitStopData = async (season?: string, round?: string) => {
   const res = await fetch(
-    `${ERGAST_API}/${season}/${round}/pitstops.json?limit=3000`
+    `${ERGAST_API_BACKUP}/${season}/${round}/pitstops.json?limit=3000`
   );
   // The return value is *not* serialized
   // You can return Date, Map, Set, etc.
