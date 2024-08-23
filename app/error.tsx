@@ -24,7 +24,7 @@ export default function Error({ error }: { error: Error }) {
     <div className="relative h-screen flex justify-center items-center -mx-8 -px-8">
       <FlickeringGrid className="h-screen w-screen" />
       <div className="absolute flex flex-col items-center">
-        <h1 className="font-f-bold text-9xl text-red">
+        <h1 className="font-f-bold text-lg text-red">
           Some error occured. Please try again
         </h1>
       </div>
