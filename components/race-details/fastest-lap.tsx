@@ -28,14 +28,14 @@ export const FastestLap: FC<FastestLapProps> = ({ details }) => {
     >
       <p className="text-white text-2xl">Fastest Lap</p>
       {isLapDataAvailable ? (
-        <div className="flex mt-2">
+        <div className="flex mt-2 justify-between items-center">
           <Image
             src={loadConstructorImage(details.constructor?.constructorId)}
             alt={details.constructor.name}
             width={185}
             height={140}
           />
-          <div className="ml-6">
+          <div>
             <p className="text-white text-lg">{details.driver}</p>
             <p className="text-white text-md">{details.constructor?.name}</p>
             <div className="text-white text-sm flex items-center mt-1">

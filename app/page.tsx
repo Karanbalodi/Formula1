@@ -2,8 +2,7 @@ import { Suspense } from "react";
 import { Home } from "@/screens/home";
 import { SearchParams } from "@/types";
 import { RaceSelection } from "@/components/race-selection/race-selection";
-import FlickeringGrid from "@/components/magicui/flickering-grid";
-import { AiOutlineFrown } from "react-icons/ai";
+import { MobileError } from "@/components/errors/mobile-error";
 
 export default async function HomePage({
   searchParams,
@@ -37,15 +36,7 @@ export default async function HomePage({
           <Home season={season} round={round} />
         </Suspense>
       </div>
-      <div className="block md:hidden relative h-screen flex justify-center items-center -mx-8 -px-8">
-        <FlickeringGrid className="h-screen w-screen" />
-        <div className="absolute flex flex-col items-center">
-          <AiOutlineFrown size={80} className="text-red" />
-          <h1 className="font-f-bold text-md text-red mt-6">
-            We are not available for mobile right now
-          </h1>
-        </div>
-      </div>
+      <MobileError />
     </>
   );
 }

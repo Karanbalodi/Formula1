@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <GoogleAnalytics />
-      <body className="px-8">
+      <body className="px-8 2xl:px-48">
         {children}
         <Analytics />
         <SpeedInsights />

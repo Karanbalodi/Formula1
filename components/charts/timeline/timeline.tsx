@@ -33,11 +33,7 @@ const HorizontalTimeline = ({ laps, pitStops }: HorizontalTimelineProps) => {
         setCurrentIndex((prevIndex) => {
           if (prevIndex < laps?.length - 1) {
             const nextIndex = prevIndex + 1;
-            setSelectedLap(laps?.[nextIndex]);
-            setPitstopsData(findPitstops(laps?.[nextIndex]?.number));
-            setGainers(
-              calculateGainersAndLosers(laps?.[nextIndex], laps?.[prevIndex])
-            );
+            updateData(laps?.[nextIndex], nextIndex);
             if (nextIndex % 9 === 0) {
               const scrollValue =
                 nextIndex + 9 < laps?.length - 1 ? nextIndex : laps.length - 1;
@@ -79,16 +75,24 @@ const HorizontalTimeline = ({ laps, pitStops }: HorizontalTimelineProps) => {
   const handleLapClick = (lap: LapData, index: number) => {
     setPlaySummary(false);
     setCurrentIndex(index);
-    setSelectedLap(lap);
-    setPitstopsData(findPitstops(lap.number));
-    setGainers(calculateGainersAndLosers(lap, laps[index - 1] ?? laps[0]));
+    updateData(lap, index);
   };
 
   const handlePlay = () => {
     setPlaySummary((prev) => !prev);
+    if (currentIndex === laps.length - 1) {
+      setCurrentIndex(0);
+      scrollToIndex(0);
+    }
   };
 
   const losers = [...gainers]?.reverse();
+
+  const updateData = (lap: LapData, index: number) => {
+    setSelectedLap(lap);
+    setPitstopsData(findPitstops(lap.number));
+    setGainers(calculateGainersAndLosers(lap, laps[index - 1] ?? laps[0]));
+  };
 
   return (
     <>
