@@ -80,7 +80,7 @@ export const RankingCard: FC<RankingCardProps> = ({
               className="text-white ml-1 text-sm"
             />
           </div>
-          <div className="flex w-[96%] mt-2">
+          <div className="flex w-full mt-2">
             <div className="py-1 px-2 bg-grey-fa rounded-md mr-2">
               <span className="text-grey-8a text-sm">
                 Pos{" "}
