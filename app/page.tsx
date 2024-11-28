@@ -4,7 +4,7 @@ import { SearchParams } from "@/types";
 import { RaceSelection } from "@/components/race-selection/race-selection";
 import { MobileError } from "@/components/errors/mobile-error";
 
-export default async function HomePage({
+export default function HomePage({
   searchParams,
 }: {
   searchParams: SearchParams;
